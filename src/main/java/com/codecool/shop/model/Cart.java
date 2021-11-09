@@ -1,5 +1,6 @@
 package com.codecool.shop.model;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 public class Cart {
@@ -37,6 +38,12 @@ public class Cart {
 
     public static HashSet<LineItem> getAll() {
         return lineItems;
+    }
+
+    public static BigDecimal calculateTotalPrice() {
+        return lineItems.stream()
+                .map(LineItem::getSubtotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
 }
