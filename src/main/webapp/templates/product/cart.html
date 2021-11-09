@@ -47,10 +47,11 @@
             <h4  th:text="${prod.name}">Product name</h4>
             <p  th:text="${prod.getPrice()}">100 USD</p>
             <div class="edit">
-                <label for="quantity">Qty: </label>
+                <label for="quantity">Qty:</label>
                 <select id="quantity">
                     <option th:each="i : ${#numbers.sequence(0, 9)}" th:text="${i}" th:selected="${i} == 1 ? true : false"></option>
                 </select>
+                <i>|</i>
                 <a href="#">Remove</a>
             </div>
         </div>
