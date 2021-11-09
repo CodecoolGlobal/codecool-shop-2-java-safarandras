@@ -30,13 +30,12 @@
 
 <body>
 
-<div class="jumbotron text-center">
-    <h1>Codecool Shop</h1>
-</div>
+<div th:replace="header.html :: copy"></div>
+
 
 <div class="container">
     <div class="card">
-        <strong th:text="${category.name}">Category Title</strong>
+        <h3 class="text-center" th:text="${category.name}">Category Name</h3>
     </div>
 
     <div id="products" class="row">
