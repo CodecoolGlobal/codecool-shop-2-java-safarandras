@@ -33,13 +33,25 @@ public class ProductController extends HttpServlet {
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
-        context.setVariable("category", productService.getProductCategory(1));
-        context.setVariable("products", productService.getProductsForCategory(1));
-        // // Alternative setting of the template context
-        // Map<String, Object> params = new HashMap<>();
-        // params.put("category", productCategoryDataStore.find(1));
-        // params.put("products", productDataStore.getBy(productCategoryDataStore.find(1)));
-        // context.setVariables(params);
+
+        context.setVariable("categories", productService.getAllProductCategories());
+        context.setVariable("suppliers", productService.getAllSupplier());
+
+        if (req.getParameter("categoryId") != null && Integer.parseInt(req.getParameter("categoryId")) > 0
+                && Integer.parseInt(req.getParameter("categoryId")) <= productService.getAllProductCategories().size()) {
+            int categoryId = Integer.parseInt(req.getParameter("categoryId"));
+            context.setVariable("category", productService.getProductCategory(categoryId));
+            context.setVariable("products", productService.getProductsForCategory(categoryId));
+        } else if (req.getParameter("supplierId") != null && Integer.parseInt(req.getParameter("supplierId")) > 0
+                && Integer.parseInt(req.getParameter("supplierId")) <= productService.getAllSupplier().size()){
+            int supplierId = Integer.parseInt(req.getParameter("supplierId"));
+            context.setVariable("category", productService.getSupplier(supplierId));
+            context.setVariable("products", productService.getProductsForSupplier(supplierId));
+        }else{
+            context.setVariable("category", new ProductCategory("All Products", "", ""));
+            context.setVariable("products", productService.getAllProducts());
+        }
+
         engine.process("product/index.html", context, resp.getWriter());
     }
 
