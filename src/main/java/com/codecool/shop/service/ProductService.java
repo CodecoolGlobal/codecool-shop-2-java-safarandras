@@ -29,5 +29,25 @@ public class ProductService{
         return productDao.getBy(category);
     }
 
+    public List<ProductCategory> getAllProductCategories(){
+        return productCategoryDao.getAll();
+    }
+
+    public List<Supplier> getAllSupplier(){
+        return supplierDao.getAll();
+    }
+
+    public Supplier getSupplier(int supplierId){
+        return supplierDao.find(supplierId);
+    }
+
+    public List<Product> getProductsForSupplier(int supplierId){
+        var supplier = supplierDao.find(supplierId);
+        return supplier.getProducts();
+    }
+
+    public List<Product> getAllProducts() {
+        return productDao.getAll();
+    }
 
 }
