@@ -3,6 +3,7 @@ package com.codecool.shop.service;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.SupplierDao;
+import com.codecool.shop.model.Cart;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
@@ -50,4 +51,11 @@ public class ProductService{
         return productDao.getAll();
     }
 
+    public Product getProduct(int id){
+        return productDao.find(id);
+    }
+
+    public int getNumberOfProductsInCart(){
+        return Cart.getAll().size();
+    }
 }
