@@ -49,7 +49,7 @@
             <div class="edit">
                 <label for="quantity">Qty:</label>
                 <select id="quantity">
-                    <option th:each="i : ${#numbers.sequence(0, 9)}" th:text="${i}" th:selected="${prod.quantity} == ${i} ? true : false"></option>
+                    <option th:each="i : ${#numbers.sequence(0, 9)}" th:text="${i}" th:selected="(${prod.quantity} == ${i} ? true : false)"></option>
                 </select>
                 <i>|</i>
                 <a href="#">Remove</a>
