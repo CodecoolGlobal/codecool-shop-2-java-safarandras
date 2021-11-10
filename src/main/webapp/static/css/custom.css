@@ -68,9 +68,21 @@
 {
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 .list-group-item
 {
     display: flex;
     flex-direction: row;
+}
+.subtotal{
+    margin-left: auto;
+    align-self: center;
+    color: dimgrey;
+}
+.total
+{
+    display: flex;
+    flex-direction: row-reverse;
+    align-self: end;
 }
