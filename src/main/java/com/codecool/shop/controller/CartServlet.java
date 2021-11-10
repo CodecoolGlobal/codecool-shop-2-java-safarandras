@@ -3,6 +3,8 @@ package com.codecool.shop.controller;
 import com.codecool.shop.config.TemplateEngineUtil;
 //import com.codecool.shop.dao.implementation.CartDaoMem;
 import com.codecool.shop.model.Cart;
+import com.codecool.shop.model.UpdateCartItem;
+import com.google.gson.Gson;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -11,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
 
 @WebServlet(urlPatterns = {"/cart", "/api/cart"})
@@ -39,8 +42,12 @@ public class CartServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int id = Integer.parseInt(req.getParameter("itemId"));
-        int newQuantity = Integer.parseInt(req.getParameter("quanity"));
+
+        Gson gson = new Gson();
+        UpdateCartItem updateCartItem = gson.fromJson(req.getReader(), UpdateCartItem.class);
+
+        int id = updateCartItem.getItemId();
+        int newQuantity = updateCartItem.getQuantity();
         Cart.update(id, newQuantity);
         resp.sendRedirect(req.getContextPath() + "/cart");
     }
