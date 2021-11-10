@@ -56,6 +56,7 @@ public class Cart {
     }
 
     public static Currency getDefaultCurrency() {
+        if (lineItems.isEmpty()) return null;
         return lineItems.stream().findFirst().get().getDefaultCurrency();
     }
 
