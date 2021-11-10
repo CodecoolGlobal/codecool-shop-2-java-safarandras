@@ -45,16 +45,16 @@
         <img alt="" class="thumbnail" src="http://placehold.it/200x125/000/fff" th:attr="class='thumbnail', src='/static/img/product_' + ${prod.id} + '.jpg'"/>
         <div class="list-group-item-text">
             <h4  th:text="${prod.name}">Product name</h4>
-            <p  th:text="${prod.getUnitPriceAsString()}">100 USD</p>
+            <p  th:text="${prod.unitPrice}">100 USD</p>
             <div class="edit">
-                <label for="quantity" th:text="${prod.getQuantity()}">Qty:</label>
+                <label for="quantity" th:text="${prod.quantity}">Qty:</label>
                 <select id="quantity">
                     <option th:each="i : ${#numbers.sequence(0, 9)}" th:text="${i}" th:selected="${i} == 1 ? true : false"></option>
                 </select>
                 <i>|</i>
                 <a href="#">Remove</a>
             </div>
-            <p class="lead" th:text="${prod.getSubtotal()}">100 USD</p>
+            <p class="lead" th:text="${prod.subtotal}">100 USD</p>
         </div>
     </div>
 
