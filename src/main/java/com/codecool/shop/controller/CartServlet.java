@@ -37,7 +37,6 @@ public class CartServlet extends HttpServlet {
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int id = Integer.parseInt(req.getParameter("itemId"));
         Cart.remove(id);
-        resp.sendRedirect(req.getContextPath() + "/cart");
     }
 
     @Override
@@ -49,6 +48,5 @@ public class CartServlet extends HttpServlet {
         int id = updateCartItem.getItemId();
         int newQuantity = updateCartItem.getQuantity();
         Cart.update(id, newQuantity);
-        resp.sendRedirect(req.getContextPath() + "/cart");
     }
 }
