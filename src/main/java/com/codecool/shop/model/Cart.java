@@ -46,4 +46,8 @@ public class Cart {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+    public static Currency getDefaultCurrency() {
+        return lineItems.stream().findFirst().get().getDefaultCurrency();
+    }
+
 }
