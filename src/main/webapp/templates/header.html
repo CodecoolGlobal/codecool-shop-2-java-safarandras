@@ -33,7 +33,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownSupp">
                         <div th:each="navsupp : ${suppliers}">
-                            <a class="dropdown-item" th:href="@{/(supplierId=${navsupp.id})}" th:text="${navsupp.name}"> Category links </a>
+                            <a class="dropdown-item" th:href="@{/(supplierId=${navsupp.id})}" th:text="${navsupp.name}"> Supplier links </a>
                         </div>
                     </div>
                 </li>
