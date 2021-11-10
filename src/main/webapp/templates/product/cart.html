@@ -25,7 +25,7 @@
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- End of Bootstrap components -->
 
-    <script src="/static/js/async.js" defer></script>
+    <script type="module" src="/static/js/cart.js" defer></script>
 
     <link rel="stylesheet" type="text/css" href="/static/css/custom.css" />
 </head>
@@ -41,22 +41,24 @@
         <h3>Products</h3>
     </div>
 
-    <div class="list-group-item" th:each="prod,iterStat : ${products}">
+    <div class="list-group-item" th:each="prod,iterStat : ${products}" th:attr="id='product_' + ${prod.getId()}">
         <img alt="" class="thumbnail" src="http://placehold.it/200x125/000/fff" th:attr="class='thumbnail', src='/static/img/product_' + ${prod.id} + '.jpg'"/>
         <div class="list-group-item-text">
             <h4  th:text="${prod.name}">Product name</h4>
-            <p  th:text="${prod.unitPrice} + ' ' + ${prod.defaultCurrency}">100 USD</p>
+            <p  class="unit-price" th:text="${prod.unitPrice} + ' ' + ${prod.defaultCurrency}">100 USD</p>
             <div class="edit">
                 <label for="quantity">Qty:</label>
-                <select id="quantity">
+                <select id="quantity" th:attr="data-id=${prod.getId()}">
                     <option th:each="i : ${#numbers.sequence(0, 9)}" th:text="${i}" th:selected="(${prod.quantity} == ${i} ? true : false)"></option>
                 </select>
                 <i>|</i>
-                <a href="#">Remove</a>
+                <div>
+                    <a href="#" class="remove" th:attr="data-id=${prod.getId()}">Remove</a>
+                </div>
             </div>
         </div>
         <div class="subtotal">
-            <p th:text="${prod.subtotal} + ' ' + ${prod.defaultCurrency}">100 USD</p>
+            <p th:text="'Subtotal: ' + ${prod.subtotal} + ' ' + ${prod.defaultCurrency}">100 USD</p>
         </div>
     </div>
 
@@ -64,7 +66,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="card-text total">
-                    <p class="lead" th:text="${total} + ' ' + ${currency}">100 USD</p>
+                    <p class="lead" th:text="'Total: ' + ${total} + ' ' + ${currency}">100 USD</p>
                 </div>
             </div>
         </div>
