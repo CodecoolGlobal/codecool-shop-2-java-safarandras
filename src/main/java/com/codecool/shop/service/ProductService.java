@@ -44,7 +44,7 @@ public class ProductService{
 
     public List<Product> getProductsForSupplier(int supplierId){
         var supplier = supplierDao.find(supplierId);
-        return supplier.getProducts();
+        return productDao.getBy(supplier);
     }
 
     public List<Product> getAllProducts() {
