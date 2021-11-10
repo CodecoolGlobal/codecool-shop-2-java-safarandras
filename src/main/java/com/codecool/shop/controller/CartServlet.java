@@ -8,12 +8,13 @@ import org.thymeleaf.context.WebContext;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "hackerNewsServlet", urlPatterns = {"/cart"}, loadOnStartup = 1)
-public class CartServlet extends javax.servlet.http.HttpServlet {
+@WebServlet(urlPatterns = {"/cart"})
+public class CartServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
