@@ -11,9 +11,9 @@ import com.codecool.shop.model.Supplier;
 import java.util.List;
 
 public class ProductService{
-    private ProductDao productDao;
-    private ProductCategoryDao productCategoryDao;
-    private SupplierDao supplierDao;
+    private final ProductDao productDao;
+    private final ProductCategoryDao productCategoryDao;
+    private final SupplierDao supplierDao;
 
     public ProductService(ProductDao productDao, ProductCategoryDao productCategoryDao, SupplierDao supplierDao) {
         this.productDao = productDao;
@@ -44,7 +44,7 @@ public class ProductService{
 
     public List<Product> getProductsForSupplier(int supplierId){
         var supplier = supplierDao.find(supplierId);
-        return supplier.getProducts();
+        return productDao.getBy(supplier);
     }
 
     public List<Product> getAllProducts() {
