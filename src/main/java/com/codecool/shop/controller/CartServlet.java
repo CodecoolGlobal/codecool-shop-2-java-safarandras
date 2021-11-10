@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = {"/cart"})
+@WebServlet(urlPatterns = {"/cart", "/api/cart"})
 public class CartServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -28,5 +28,20 @@ public class CartServlet extends HttpServlet {
         context.setVariable("total", Cart.calculateTotalPrice());
         context.setVariable("currency", Cart.getDefaultCurrency());
         engine.process("product/cart.html", context, resp.getWriter());
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int id = Integer.parseInt(req.getParameter("itemId"));
+        Cart.remove(id);
+        resp.sendRedirect(req.getContextPath() + "/cart");
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int id = Integer.parseInt(req.getParameter("itemId"));
+        int newQuantity = Integer.parseInt(req.getParameter("quanity"));
+        Cart.update(id, newQuantity);
+        resp.sendRedirect(req.getContextPath() + "/cart");
     }
 }
