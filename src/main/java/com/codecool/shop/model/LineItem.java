@@ -1,16 +1,22 @@
 package com.codecool.shop.model;
 
 import java.math.BigDecimal;
+import java.util.Currency;
+import java.util.HashSet;
 
 public class LineItem extends BaseModel{
-    private final Product product;
+    private HashSet<Product> products = new HashSet<>();
+    private Product product;
     private int quantity = 1;
+    private final Currency defaultCurrency;
     private final BigDecimal unitPrice;
     private BigDecimal subtotal;
 
     public LineItem(Product product) {
         super(product.getName(), product.getDescription());
         this.product = product;
+        add(product);
+        defaultCurrency = product.getDefaultCurrency();
         unitPrice = product.getDefaultPrice();
         subtotal = product.getDefaultPrice();
     }
@@ -20,8 +26,17 @@ public class LineItem extends BaseModel{
         subtotal = subtotal.add(product.getDefaultPrice());
     }
 
-    public Product getProduct() {
-        return product;
+    public void add(Product product) {
+        products.add(product);
+    }
+
+    public Product getProductById(int id) {
+        for (Product product: products) {
+            if (product.getId() == id) {
+                return product;
+            }
+        }
+        return null;
     }
 
     public int getQuantity() {
@@ -57,4 +72,15 @@ public class LineItem extends BaseModel{
         return String.valueOf(unitPrice);
     }
 
+    public Product getProduct() {
+        return product;
+    }
+
+    public HashSet<Product> getProducts() {
+        return products;
+    }
+
+    public Currency getDefaultCurrency() {
+        return defaultCurrency;
+    }
 }
