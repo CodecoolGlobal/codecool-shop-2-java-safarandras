@@ -13,11 +13,11 @@ public class Cart {
             for (LineItem lineItem: lineItems) {
                 if (Objects.equals(product.name, lineItem.getProduct().getName())) {
                     lineItem.increaseQuantityAndSubtotal();
-                } else {
-                    newItem.setId(lineItems.size() + 1);
-                    lineItems.add(newItem);
+                    break;
                 }
             }
+            newItem.setId(lineItems.size() + 1);
+            lineItems.add(newItem);
         } else {
             newItem.setId(1);
             lineItems.add(newItem);
