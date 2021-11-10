@@ -29,6 +29,7 @@ public class CartServlet extends javax.servlet.http.HttpServlet {
         WebContext context = new WebContext(req, resp, req.getServletContext());
         context.setVariable("products", Cart.getAll());
         context.setVariable("total", Cart.calculateTotalPrice());
+        context.setVariable("currency", Cart.getDefaultCurrency());
         engine.process("product/cart.html", context, resp.getWriter());
     }
 }
