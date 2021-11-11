@@ -25,6 +25,7 @@ public class CheckoutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         //dynamic data for header menu
+        Cart cart = Cart.getInstance();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
         SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
         ProductService productService = new ProductService(productCategoryDataStore, supplierDataStore);
@@ -34,10 +35,10 @@ public class CheckoutServlet extends HttpServlet {
         context.setVariable("suppliers", productService.getAllSupplier());
         context.setVariable("showCart", false);
 
-        context.setVariable("products", Cart.getAll());
-        context.setVariable("total", Cart.calculateTotalPrice());
-        context.setVariable("currency", Cart.getDefaultCurrency());
-        context.setVariable("numberOfProductsInCart", productService.getNumberOfProductsInCart());
+        context.setVariable("products", cart.getAllLineItem());
+        context.setVariable("total", cart.calculateTotalPrice());
+        context.setVariable("currency", cart.getDefaultCurrency());
+        context.setVariable("numberOfProductsInCart", productService.getNumberOfProductsInCart(cart));
         engine.process("product/checkout.html", context, resp.getWriter());
     }
 }
