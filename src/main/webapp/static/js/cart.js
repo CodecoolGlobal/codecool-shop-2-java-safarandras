@@ -22,7 +22,7 @@ const shoppingCart ={
         let itemId = e.target.dataset.id;
         let deleteResponse = await dataHandler.deleteItem(itemId);
         if (deleteResponse.ok) {
-            let container = document.querySelector(".container");
+            let container = document.querySelector("#cart");
             let domElement = document.querySelector(`#product_${itemId}`);
             container.removeChild(domElement);
             shoppingCart.changeTotal();
