@@ -1,7 +1,6 @@
 package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
-//import com.codecool.shop.dao.implementation.CartDaoMem;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.SupplierDao;
@@ -16,7 +15,6 @@ import com.google.gson.reflect.TypeToken;
 import com.codecool.shop.model.CartUpdateResponse;
 import com.codecool.shop.model.LineItem;
 import com.codecool.shop.model.UpdateCartItem;
-import com.google.gson.Gson;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
