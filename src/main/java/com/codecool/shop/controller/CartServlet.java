@@ -64,7 +64,8 @@ public class CartServlet extends HttpServlet {
         HashMap<String,Integer> productIdMap = gson.fromJson(body,new TypeToken<HashMap<String,Integer>>(){}.getType());
         int productId = productIdMap.get("productId");
         Product product = productService.getProduct(productId);
-        Cart.add(product);
+        Cart cart = Cart.getInstance();
+        cart.add(product);
 
     }
 
