@@ -27,6 +27,7 @@
 
     <script type="module" src="/static/js/cart.js" defer></script>
 
+    <link rel="icon" th:href="@{/static/img/logo.png}">
     <link rel="stylesheet" type="text/css" href="/static/css/custom.css" />
 </head>
 
@@ -34,9 +35,10 @@
 
 <div th:replace="header.html :: copy"></div>
 <div class="container">
-    <div class="card text-center">
-        <h3>Cart</h3>
+    <div class="card">
+        <h1 class="text-center display-4" >Shopping Cart</h1>
     </div>
+
 </div>
 
 <th:block th:if="${#sets.isEmpty(products)}">
