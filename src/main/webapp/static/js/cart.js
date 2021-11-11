@@ -6,7 +6,7 @@ const shoppingCart ={
     changeSubtotal: (e) => {
         let quantity = e.target.options.selectedIndex;
         let itemId = e.target.dataset.id;
-        let unitPrice = parseInt(document.querySelector(`#product_${itemId} > .list-group-item-text > .unit-price`).innerHTML);
+        let unitPrice = parseFloat(document.querySelector(`#product_${itemId} > .list-group-item-text > .unit-price`).innerHTML);
         let subtotal = document.querySelector(`#product_${itemId} > .subtotal > p`);
         subtotal.innerHTML = `Subtotal: ${quantity * unitPrice} USD`;
     },
@@ -14,7 +14,7 @@ const shoppingCart ={
         let subtotals = document.querySelectorAll(".subtotal > p")
         let total = 0
         for(let subtotal of subtotals){
-            total += parseInt(subtotal.innerHTML.split(" ")[1]);
+            total += parseFloat(subtotal.innerHTML.split(" ")[1]);
         }
         document.querySelector(".total > p").innerHTML = `Total: ${total} USD`
     },
@@ -45,7 +45,7 @@ const shoppingCart ={
             let itemId = e.target.dataset.id;
             let updateResponse = await dataHandler.changeItem(itemId, quantity);
             console.log(updateResponse);
-            if (updateResponse.productId === parseInt(itemId)) {
+            if (updateResponse.productId === parseFloat(itemId)) {
                 const newQuantity = updateResponse.quantity;
                 const subtotal = updateResponse.subtotal;
                 const defaultCurrency = updateResponse.defaultCurrency;

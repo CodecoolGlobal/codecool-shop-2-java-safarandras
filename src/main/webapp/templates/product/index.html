@@ -5,7 +5,7 @@
     <meta name="author" content="Codecool" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-    <title>Codecool Shop</title>
+    <title>Yeti Shop</title>
 
     <!-- Bootstrap components -->
     <!-- Latest compiled and minified Jquery -->
@@ -25,6 +25,7 @@
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- End of Bootstrap components -->
 
+    <link rel="icon" th:href="@{/static/img/logo.png}">
     <link th:href="@{/static/css/custom.css}" rel="stylesheet" />
     <script type="text/javascript" th:src="@{/static/js/index.js}"></script>
 </head>
@@ -36,7 +37,7 @@
 
 <div class="container">
     <div class="card">
-        <h3 class="text-center" th:text="${category.name}">Category Name</h3>
+        <h1 class="text-center display-4" th:text="${category.name}">Category Name</h1>
     </div>
 
     <div id="products" class="row">
@@ -52,7 +53,7 @@
                         <p class="lead" th:text="${prod.price}">100 USD</p>
                     </div>
                     <div class="card-text">
-                        <a class="btn btn-success" href="#" th:onclick="addToCartBtnHandler(this)" th:attr="data-prodId=${prod.id}" >Add to cart</a>
+                        <a class="btn btn-success" th:onclick="addToCartBtnHandler(this)" th:attr="data-prodId=${prod.id}" >Add to cart</a>
                     </div>
                 </div>
             </div>
