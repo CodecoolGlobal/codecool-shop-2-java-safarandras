@@ -34,6 +34,7 @@ public class ProductController extends HttpServlet {
 
         context.setVariable("categories", productService.getAllProductCategories());
         context.setVariable("suppliers", productService.getAllSupplier());
+        context.setVariable("showCart", true);
         context.setVariable("numberOfProductsInCart", productService.getNumberOfProductsInCart());
 
         if (req.getParameter("categoryId") != null && Integer.parseInt(req.getParameter("categoryId")) > 0
