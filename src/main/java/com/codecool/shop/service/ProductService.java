@@ -21,6 +21,12 @@ public class ProductService{
         this.supplierDao = supplierDao;
     }
 
+    public ProductService(ProductCategoryDao productCategoryDao, SupplierDao supplierDao) {
+        this.productDao = null;
+        this.productCategoryDao = productCategoryDao;
+        this.supplierDao = supplierDao;
+    }
+
     public ProductCategory getProductCategory(int categoryId){
         return productCategoryDao.find(categoryId);
     }
@@ -55,7 +61,7 @@ public class ProductService{
         return productDao.find(id);
     }
 
-    public int getNumberOfProductsInCart(){
-        return Cart.getAll().size();
+    public int getNumberOfProductsInCart(Cart cart){
+        return cart.getNumberOfProductsInCart();
     }
 }
