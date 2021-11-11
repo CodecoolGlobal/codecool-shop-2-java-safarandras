@@ -55,19 +55,19 @@
         <h3>Products</h3>
     </div>
   
-    <div class="list-group-item" th:each="prod,iterStat : ${products}" th:attr="id='product_' + ${prod.getId()}">
+    <div class="list-group-item" th:each="prod,iterStat : ${products}" th:attr="id='product_' + ${prod.getProduct().getId()}">
         <img alt="" class="thumbnail" src="http://placehold.it/200x125/000/fff" th:attr="class='thumbnail', src='/static/img/' + ${prod.product.image}"/>
         <div class="list-group-item-text">
             <h4  th:text="${prod.name}">Product name</h4>
             <p  class="unit-price" th:text="${prod.unitPrice} + ' ' + ${prod.defaultCurrency}">100 USD</p>
             <div class="edit">
                 <label for="quantity">Qty:</label>
-                <select id="quantity" th:attr="data-id=${prod.getId()}">
+                <select id="quantity" th:attr="data-id=${prod.getProduct().getId()}">
                     <option th:each="i : ${#numbers.sequence(0, 9)}" th:text="${i}" th:selected="(${prod.quantity} == ${i} ? true : false)"></option>
                 </select>
                 <i>|</i>
                 <div>
-                    <a href="#" class="remove" th:attr="data-id=${prod.getId()}">Remove</a>
+                    <a href="#" class="remove" th:attr="data-id=${prod.getProduct().getId()}">Remove</a>
                 </div>
             </div>
         </div>
