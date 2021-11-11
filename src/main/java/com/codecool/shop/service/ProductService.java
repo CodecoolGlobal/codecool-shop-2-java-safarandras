@@ -62,6 +62,6 @@ public class ProductService{
     }
 
     public int getNumberOfProductsInCart(Cart cart){
-        return cart.getAll().size();
+        return cart.getNumberOfProductsInCart();
     }
 }

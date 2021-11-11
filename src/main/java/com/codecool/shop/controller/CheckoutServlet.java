@@ -35,7 +35,7 @@ public class CheckoutServlet extends HttpServlet {
         context.setVariable("suppliers", productService.getAllSupplier());
         context.setVariable("showCart", false);
 
-        context.setVariable("products", cart.getAll());
+        context.setVariable("products", cart.getAllLineItem());
         context.setVariable("total", cart.calculateTotalPrice());
         context.setVariable("currency", cart.getDefaultCurrency());
         context.setVariable("numberOfProductsInCart", productService.getNumberOfProductsInCart(cart));
