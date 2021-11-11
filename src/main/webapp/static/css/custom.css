@@ -18,6 +18,10 @@ footer {
     height: 60px;
 }
 
+div.container {
+    background-color: white;
+}
+
 .thumbnail
 {
     width: 150px;
