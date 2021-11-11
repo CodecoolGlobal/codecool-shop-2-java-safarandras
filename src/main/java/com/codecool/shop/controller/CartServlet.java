@@ -30,8 +30,16 @@ public class CartServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        //dynamic data for header menu
+        ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
+        SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
+        ProductService productService = new ProductService(productCategoryDataStore, supplierDataStore);
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
+        context.setVariable("categories", productService.getAllProductCategories());
+        context.setVariable("suppliers", productService.getAllSupplier());
+        context.setVariable("showCart", false);
+
         context.setVariable("products", Cart.getAll());
         context.setVariable("total", Cart.calculateTotalPrice());
         context.setVariable("currency", Cart.getDefaultCurrency());
