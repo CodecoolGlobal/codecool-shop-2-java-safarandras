@@ -4,10 +4,10 @@ export let dataHandler = {
     },
     changeItem: async function (itemId, quantity){
         let payload = {itemId:`${itemId}`, quantity:`${quantity}`}
-        await apiUpdate("/api/cart", payload)
+        return await apiUpdate("/api/cart", payload);
     },
     deleteItem: async function (itemId) {
-        await apiDelete(`/api/cart?itemId=${itemId}`)
+        return await apiDelete(`/api/cart?itemId=${itemId}`)
     }
 }
 
@@ -22,9 +22,9 @@ async function apiGet(url) { //fetch
 }
 
 async function apiDelete(url) {
-    let response = await fetch(url, {
+    return await fetch(url, {
         method: 'DELETE'
-    })
+    });
 }
 
 async function apiPost(url, payload) {

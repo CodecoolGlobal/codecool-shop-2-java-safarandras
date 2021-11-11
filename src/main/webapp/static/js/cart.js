@@ -18,34 +18,41 @@ const shoppingCart ={
         }
         document.querySelector(".total > p").innerHTML = `Total: ${total} USD`
     },
-    removeButtonHandler: (e) => {
+    removeButtonHandler: async (e) => {
         let itemId = e.target.dataset.id;
-        dataHandler.deleteItem(itemId).then();
-        let container = document.querySelector(".container");
-        let domElement = document.querySelector(`#product_${itemId}`);
-        container.removeChild(domElement);
-        shoppingCart.changeTotal(e);
-        if(container.querySelectorAll(`.list-group-item`).length === 0){
-            container.innerHTML =
-                `<div class="container">
+        let deleteResponse = await dataHandler.deleteItem(itemId);
+        if (deleteResponse.ok) {
+            let container = document.querySelector(".container");
+            let domElement = document.querySelector(`#product_${itemId}`);
+            container.removeChild(domElement);
+            shoppingCart.changeTotal();
+            if(container.querySelectorAll(`.list-group-item`).length === 0){
+                container.innerHTML =
+                    `<div class="container">
                     <div class="card">
                         <h3 class="row justify-content-md-center">Your cart is empty!</h3>
                     </div>
                 </div>`
+            }
         }
     },
-    selectChangeHandler: (e) => {
+    selectChangeHandler: async (e) => {
         if(e.target.options.selectedIndex === 0){
             shoppingCart.removeButtonHandler(e);
         }
         else{
             let quantity = e.target.options.selectedIndex;
             let itemId = e.target.dataset.id;
-            dataHandler.changeItem(itemId, quantity).then();
-            shoppingCart.changeSubtotal(e);
-            shoppingCart.changeTotal(e);
+            let updateResponse = await dataHandler.changeItem(itemId, quantity);
+            console.log(updateResponse);
+            if (updateResponse.productId === parseInt(itemId)) {
+                const newQuantity = updateResponse.quantity;
+                const subtotal = updateResponse.subtotal;
+                const defaultCurrency = updateResponse.defaultCurrency;
+                shoppingCart.changeSubtotal(e);
+                shoppingCart.changeTotal();
+            }
         }
-        console.log(e.target.options.selectedIndex);
     },
     init: () => {
         for(let button of shoppingCart.removeButtons){
