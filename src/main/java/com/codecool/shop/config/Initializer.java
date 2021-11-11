@@ -43,7 +43,7 @@ public class Initializer implements ServletContextListener {
         Supplier alien = addSupplier("Alien", "Everything we have on our extraterrestrial friends");
 
         //setting up a new product category
-        ProductCategory kitchenUtensil = addProductCategory("Kitchen Utensil", "Household items", "A kitchen utensil is a small hand held tool used for food preparation.");
+        ProductCategory misc = addProductCategory("Miscellaneous", "Household items", "A kitchen utensil is a small hand held tool used for food preparation.");
         ProductCategory tShirt = addProductCategory("T-shirt", "Clothing", "Funny T-shirts with our favourite real-life monsters on them");
         ProductCategory mug = addProductCategory("Mug", "Household items", "Mugs with funny labels");
 
@@ -148,13 +148,13 @@ public class Initializer implements ServletContextListener {
                 new BigDecimal("16.99"),
                 "USD",
                 "A followup in the Nessie line of kitchen utensils, a nessie shaped pasta spoon.",
-                kitchenUtensil, nessie, "nessie_pasta_spoon.jpg"));
+                misc, nessie, "nessie_pasta_spoon.jpg"));
         productDataStore.add(new Product(
                 "Loch Ness monster ladle",
                 new BigDecimal("14.99"),
                 "USD",
                 "A soup ladle made in the shape of our beloved Nessie.",
-                kitchenUtensil, nessie, "nessie_ladle.jpg"));
+                misc, nessie, "nessie_ladle.jpg"));
         productDataStore.add(new Product(
                 "Believe in yourself tee",
                 new BigDecimal("24.99"),
