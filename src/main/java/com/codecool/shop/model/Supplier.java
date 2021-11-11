@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Supplier extends BaseModel {
-    private List<Product> products;
+    private transient List<Product> products;
 
     public Supplier(String name, String description) {
         super(name);

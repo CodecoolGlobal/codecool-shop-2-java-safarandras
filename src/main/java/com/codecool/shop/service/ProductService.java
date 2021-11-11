@@ -61,7 +61,7 @@ public class ProductService{
         return productDao.find(id);
     }
 
-    public int getNumberOfProductsInCart(){
-        return Cart.getAll().size();
+    public int getNumberOfProductsInCart(Cart cart){
+        return cart.getAll().size();
     }
 }

@@ -13,6 +13,10 @@ import com.codecool.shop.model.Product;
 import com.codecool.shop.service.ProductService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.codecool.shop.model.CartUpdateResponse;
+import com.codecool.shop.model.LineItem;
+import com.codecool.shop.model.UpdateCartItem;
+import com.google.gson.Gson;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -23,8 +27,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
+import java.io.PrintWriter;
 
-@WebServlet(urlPatterns = {"/cart"})
+@WebServlet(urlPatterns = {"/cart", "/api/cart"})
 public class CartServlet extends HttpServlet {
 
     @Override
@@ -40,9 +45,10 @@ public class CartServlet extends HttpServlet {
         context.setVariable("suppliers", productService.getAllSupplier());
         context.setVariable("showCart", false);
 
-        context.setVariable("products", Cart.getAll());
-        context.setVariable("total", Cart.calculateTotalPrice());
-        context.setVariable("currency", Cart.getDefaultCurrency());
+        Cart cart = Cart.getInstance();
+        context.setVariable("products", cart.getAll());
+        context.setVariable("total", cart.calculateTotalPrice());
+        context.setVariable("currency", cart.getDefaultCurrency());
         engine.process("product/cart.html", context, resp.getWriter());
     }
 
@@ -59,6 +65,38 @@ public class CartServlet extends HttpServlet {
         int productId = productIdMap.get("productId");
         Product product = productService.getProduct(productId);
         Cart.add(product);
+
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int id = Integer.parseInt(req.getParameter("itemId"));
+        Cart cart = Cart.getInstance();
+        cart.remove(id);
+        PrintWriter response = resp.getWriter();
+        response.println("success");
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        Gson gson = new Gson();
+        UpdateCartItem updateCartItem = gson.fromJson(req.getReader(), UpdateCartItem.class);
+
+        int id = updateCartItem.getItemId();
+        int newQuantity = updateCartItem.getQuantity();
+        Cart cart = Cart.getInstance();
+        cart.update(id, newQuantity);
+
+        LineItem item = cart.find(id);
+        CartUpdateResponse cartUpdateResponse = new CartUpdateResponse();
+        cartUpdateResponse.setProductId(item.getProduct().getId());
+        cartUpdateResponse.setQuantity(item.getQuantity());
+        cartUpdateResponse.setSubtotal(item.getSubtotal());
+        cartUpdateResponse.setDefaultCurrency(item.getDefaultCurrency());
+        String jsonString = gson.toJson(cartUpdateResponse);
+        PrintWriter response = resp.getWriter();
+        response.println(jsonString);
 
     }
 }

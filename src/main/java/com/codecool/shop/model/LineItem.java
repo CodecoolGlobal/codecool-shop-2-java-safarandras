@@ -26,6 +26,21 @@ public class LineItem extends BaseModel{
         subtotal = subtotal.add(product.getDefaultPrice());
     }
 
+    public void decreaseQuantityAndSubtotal() {
+        if (quantity > 0) {
+            quantity--;
+            subtotal = subtotal.subtract(product.getDefaultPrice());
+        }
+    }
+
+    public boolean isquantityZero() {
+        return quantity == 0;
+    }
+
+    public boolean isLastProduct() {
+        return quantity == 1;
+    }
+
     public void add(Product product) {
         products.add(product);
     }
@@ -43,11 +58,7 @@ public class LineItem extends BaseModel{
         return quantity;
     }
 
-    public String getQuantityAsString() {
-        return String.valueOf(quantity);
-    }
-
-    public void setQuantity(int quantity) {
+    public void setQuantityAndUpdateSubtotal(int quantity) {
         this.quantity = quantity;
         subtotal = BigDecimal.valueOf(quantity).multiply(product.getDefaultPrice());
     }
@@ -56,20 +67,12 @@ public class LineItem extends BaseModel{
         return subtotal;
     }
 
-    public String getSubtotalAsString() {
-        return String.valueOf(subtotal);
-    }
-
     public void setSubtotal(BigDecimal subtotal) {
         this.subtotal = subtotal;
     }
 
     public BigDecimal getUnitPrice() {
         return unitPrice;
-    }
-
-    public String getUnitPriceAsString() {
-        return String.valueOf(unitPrice);
     }
 
     public Product getProduct() {
