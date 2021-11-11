@@ -42,7 +42,7 @@
     </div>
 
     <div class="list-group-item" th:each="prod,iterStat : ${products}">
-        <img alt="" class="thumbnail" src="http://placehold.it/200x125/000/fff" th:attr="class='thumbnail', src='/static/img/product_' + ${prod.id} + '.jpg'"/>
+        <img alt="" class="thumbnail" src="http://placehold.it/200x125/000/fff" th:attr="class='thumbnail', src='/static/img/' + ${prod.product.image}"/>
         <div class="list-group-item-text">
             <h4  th:text="${prod.name}">Product name</h4>
             <p  th:text="${prod.unitPrice} + ' ' + ${prod.defaultCurrency}">100 USD</p>
