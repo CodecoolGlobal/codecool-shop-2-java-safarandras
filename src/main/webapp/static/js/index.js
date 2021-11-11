@@ -9,19 +9,19 @@ function addToCartBtnHandler(element) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data),
-    }).then(function (response) {                      // first then()
+    }).then(function (response) {
         if (response.ok) {
             return response.text();
         }
 
         throw new Error('Something went wrong.');
     })
-        .then(function (text) {                          // second then()
+        .then(function (text) {
             console.log('Request successful', text);
             let cartNumber = document.querySelector("#lblCartCount");
             cartNumber.textContent = (parseInt(cartNumber.textContent) + 1).toString();
         })
-        .catch(function (error) {                        // catch
+        .catch(function (error) {
             console.log('Request failed', error);
         });
 }
