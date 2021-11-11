@@ -1,6 +1,19 @@
 .glyphicon {
     margin-right:5px;
 }
+
+body {
+    background-image: url('/static/img/background_main4.jpg');
+    background-repeat: no-repeat;
+    background-width: 100%;
+    background-size: 100%
+}
+
+html, body {
+    margin:0;
+    height:100%;
+}
+
 .thumbnail
 {
     width: 150px;
