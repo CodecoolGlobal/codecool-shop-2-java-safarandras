@@ -36,6 +36,15 @@
     <h1>Cart</h1>
 </div>
 
+<th:block th:if="${#sets.isEmpty(products)}">
+    <div class="container">
+        <div class="card">
+            <h3 class="row justify-content-md-center">Your cart is empty!</h3>
+        </div>
+    </div>
+</th:block>
+
+<th:block th:if="${not #sets.isEmpty(products)}">
 <div class="container">
     <div class="card">
         <h3>Products</h3>
@@ -73,6 +82,7 @@
     </div>
 
 </div>
+</th:block>
 
 <div th:replace="footer.html :: copy"></div>
 

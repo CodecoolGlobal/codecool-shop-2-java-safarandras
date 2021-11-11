@@ -11,7 +11,7 @@ public class Cart {
         LineItem newItem = new LineItem(product);
         if (!lineItems.isEmpty()) {
             for (LineItem lineItem: lineItems) {
-                if (Objects.equals(product.name, lineItem.getProduct().getName())) {
+                if (product.getId() == lineItem.getProduct().getId()) {
                     lineItem.increaseQuantityAndSubtotal();
                     break;
                 }
@@ -25,15 +25,24 @@ public class Cart {
 
     }
 
-    public static LineItem find(String name) {
+    public static LineItem find(int id) {
         return lineItems.stream()
-                .filter(t -> t.getName().equals(name))
+                .filter(t -> t.getProduct().getId() == id)
                 .findFirst()
                 .orElse(null);
     }
 
-    public static void remove(String name) {
-        lineItems.remove(find(name));
+    public static void update(int id, int newQuantity) {     // needs product list handling in LineItem if we have different products in the same LineItem
+        LineItem itemToUpdate = find(id);
+        if (newQuantity == 0) {
+            remove(id);
+        } else {
+            itemToUpdate.setQuantityAndUpdateSubtotal(newQuantity);
+        }
+    }
+
+    public static void remove(int id) {
+        lineItems.remove(find(id));
     }
 
     public static HashSet<LineItem> getAll() {
@@ -47,6 +56,7 @@ public class Cart {
     }
 
     public static Currency getDefaultCurrency() {
+        if (lineItems.isEmpty()) return null;
         return lineItems.stream().findFirst().get().getDefaultCurrency();
     }
 
