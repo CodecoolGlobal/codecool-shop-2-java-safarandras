@@ -30,7 +30,7 @@ const shoppingCart ={
                 container.innerHTML =
                     `<div class="container">
                     <div class="card">
-                        <h3 class="row justify-content-md-center">Your cart is empty!</h3>
+                        <h4 class="row justify-content-md-center">Your cart is empty!</h4>
                     </div>
                 </div>`
             }
