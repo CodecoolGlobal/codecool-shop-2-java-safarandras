@@ -54,7 +54,6 @@ public class Cart {
     }
 
     public void remove(int id) {
-        System.out.println(find(id).toString());
         lineItems.remove(find(id));
     }
 
