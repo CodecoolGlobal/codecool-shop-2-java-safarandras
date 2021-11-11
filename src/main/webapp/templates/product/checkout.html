@@ -5,7 +5,7 @@
     <meta name="author" content="Codecool"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 
-    <title>Shopping Cart</title>
+    <title>Checkout</title>
 
     <!-- Bootstrap components -->
     <!-- Latest compiled and minified Jquery -->
@@ -27,6 +27,7 @@
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <!-- End of Bootstrap components -->
 
+    <link rel="icon" th:href="@{/static/img/logo.png}">
     <link rel="stylesheet" type="text/css" href="/static/css/custom.css"/>
 </head>
 
@@ -37,7 +38,10 @@
 <div class="container">
     <div class="py-5 text-center">
         <img class="d-block mx-auto mb-4" src="/static/img/logo.png" alt="" width="72" height="72">
-        <h2>Checkout</h2>
+        <div class="card">
+            <h1 class="text-center display-4" >Checkout</h1>
+        </div>
+
         <p class="lead">Just one more step remains. Please fill the form below!</p>
     </div>
     <div class="row">
