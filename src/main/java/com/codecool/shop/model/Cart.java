@@ -5,9 +5,21 @@ import java.util.*;
 
 public class Cart {
 
-    private static HashSet<LineItem> lineItems = new HashSet<>();
+    private HashSet<LineItem> lineItems;
+    private static Cart instance;
 
-    public static void add(Product product) {
+    private Cart() {
+        lineItems = new HashSet<>();
+    }
+
+    public static Cart getInstance() {
+        if (instance == null) {
+            instance = new Cart();
+        }
+        return instance;
+    }
+
+    public void add(Product product) {
         LineItem newItem = new LineItem(product);
         if (!lineItems.isEmpty()) {
             for (LineItem lineItem: lineItems) {
@@ -25,14 +37,14 @@ public class Cart {
 
     }
 
-    public static LineItem find(int id) {
+    public LineItem find(int id) {
         return lineItems.stream()
                 .filter(t -> t.getProduct().getId() == id)
                 .findFirst()
                 .orElse(null);
     }
 
-    public static void update(int id, int newQuantity) {     // needs product list handling in LineItem if we have different products in the same LineItem
+    public void update(int id, int newQuantity) {     // needs product list handling in LineItem if we have different products in the same LineItem
         LineItem itemToUpdate = find(id);
         if (newQuantity == 0) {
             remove(id);
@@ -41,22 +53,22 @@ public class Cart {
         }
     }
 
-    public static void remove(int id) {
+    public void remove(int id) {
         System.out.println(find(id).toString());
         lineItems.remove(find(id));
     }
 
-    public static HashSet<LineItem> getAll() {
+    public HashSet<LineItem> getAll() {
         return lineItems;
     }
 
-    public static BigDecimal calculateTotalPrice() {
+    public BigDecimal calculateTotalPrice() {
         return lineItems.stream()
                 .map(LineItem::getSubtotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public static Currency getDefaultCurrency() {
+    public Currency getDefaultCurrency() {
         if (lineItems.isEmpty()) return null;
         return lineItems.stream().findFirst().get().getDefaultCurrency();
     }
