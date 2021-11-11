@@ -58,8 +58,14 @@ public class Cart {
         lineItems.remove(find(id));
     }
 
-    public HashSet<LineItem> getAll() {
+    public HashSet<LineItem> getAllLineItem() {
         return lineItems;
+    }
+
+    public int getNumberOfProductsInCart() {
+        return lineItems.stream()
+                .mapToInt(LineItem::getQuantity)
+                .sum();
     }
 
     public BigDecimal calculateTotalPrice() {
