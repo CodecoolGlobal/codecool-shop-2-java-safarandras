@@ -3,10 +3,10 @@
 }
 
 body {
-    background-image: url('/static/img/background_main4.jpg');
-    background-repeat: no-repeat;
+    background-image: url('/static/img/background_main4_medium2.jpg');
     background-width: 100%;
-    background-size: 100%
+    background-size: 100%;
+    background-repeat: repeat;
 }
 
 html, body {
