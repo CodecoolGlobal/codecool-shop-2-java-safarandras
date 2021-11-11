@@ -10,7 +10,7 @@ const shoppingCart ={
         let subtotal = document.querySelector(`#product_${itemId} > .subtotal > p`);
         subtotal.innerHTML = `Subtotal: ${quantity * unitPrice} USD`;
     },
-    changeTotal: (e) => {
+    changeTotal: () => {
         let subtotals = document.querySelectorAll(".subtotal > p")
         let total = 0
         for(let subtotal of subtotals){
@@ -24,6 +24,15 @@ const shoppingCart ={
         let container = document.querySelector(".container");
         let domElement = document.querySelector(`#product_${itemId}`);
         container.removeChild(domElement);
+        shoppingCart.changeTotal(e);
+        if(container.querySelectorAll(`.list-group-item`).length === 0){
+            container.innerHTML =
+                `<div class="container">
+                    <div class="card">
+                        <h3 class="row justify-content-md-center">Your cart is empty!</h3>
+                    </div>
+                </div>`
+        }
     },
     selectChangeHandler: (e) => {
         if(e.target.options.selectedIndex === 0){
