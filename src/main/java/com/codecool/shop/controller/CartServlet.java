@@ -44,7 +44,7 @@ public class CartServlet extends HttpServlet {
         context.setVariable("showCart", false);
 
         Cart cart = Cart.getInstance();
-        context.setVariable("products", cart.getAll());
+        context.setVariable("products", cart.getAllLineItem());
         context.setVariable("total", cart.calculateTotalPrice());
         context.setVariable("currency", cart.getDefaultCurrency());
         engine.process("product/cart.html", context, resp.getWriter());
