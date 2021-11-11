@@ -18,8 +18,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @WebServlet(urlPatterns = {"/"})
 public class ProductController extends HttpServlet {
@@ -36,6 +34,7 @@ public class ProductController extends HttpServlet {
 
         context.setVariable("categories", productService.getAllProductCategories());
         context.setVariable("suppliers", productService.getAllSupplier());
+        context.setVariable("numberOfProductsInCart", productService.getNumberOfProductsInCart());
 
         if (req.getParameter("categoryId") != null && Integer.parseInt(req.getParameter("categoryId")) > 0
                 && Integer.parseInt(req.getParameter("categoryId")) <= productService.getAllProductCategories().size()) {
