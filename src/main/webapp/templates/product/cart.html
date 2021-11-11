@@ -52,9 +52,9 @@
     <div class="card">
         <h3>Products</h3>
     </div>
-
+  
     <div class="list-group-item" th:each="prod,iterStat : ${products}" th:attr="id='product_' + ${prod.getId()}">
-        <img alt="" class="thumbnail" src="http://placehold.it/200x125/000/fff" th:attr="class='thumbnail', src='/static/img/product_' + ${prod.id} + '.jpg'"/>
+        <img alt="" class="thumbnail" src="http://placehold.it/200x125/000/fff" th:attr="class='thumbnail', src='/static/img/' + ${prod.product.image}"/>
         <div class="list-group-item-text">
             <h4  th:text="${prod.name}">Product name</h4>
             <p  class="unit-price" th:text="${prod.unitPrice} + ' ' + ${prod.defaultCurrency}">100 USD</p>
@@ -96,8 +96,6 @@
 
 </div>
 </th:block>
-
-<div th:replace="footer.html :: copy"></div>
 
 </body>
 </html>
