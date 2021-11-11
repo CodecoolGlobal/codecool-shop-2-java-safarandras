@@ -28,7 +28,8 @@ public class AddToCartServlet extends HttpServlet {
 
         int productId = Integer.parseInt(req.getParameter("productId"));
         Product product = productService.getProduct(productId);
-        Cart.add(product);
+        Cart cart = Cart.getInstance();
+        cart.add(product);
 
     }
 }
