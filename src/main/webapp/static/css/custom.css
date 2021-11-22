@@ -1,13 +1,36 @@
 .glyphicon {
     margin-right:5px;
 }
+
+body {
+    background-image: url('/static/img/background_main4_medium2.jpg');
+    background-width: 100%;
+    background-size: 100%;
+    background-repeat: repeat;
+}
+
+html, body {
+    margin:0;
+    height:100%;
+}
+
+footer {
+    height: 60px;
+}
+
+div.container {
+    background-color: white;
+}
+
 .thumbnail
 {
+    width: 150px;
+    height: auto;
     margin-bottom: 20px;
-    padding: 0px;
-    -webkit-border-radius: 0px;
-    -moz-border-radius: 0px;
-    border-radius: 0px;
+    padding: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
 }
 .thumbnail img
 {
@@ -31,11 +54,11 @@
 }
 .item.list-group-item .thumbnail
 {
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 .item.list-group-item .caption
 {
-    padding: 9px 9px 0px 9px;
+    padding: 9px 9px 0 9px;
 }
 .item.list-group-item:nth-of-type(odd)
 {
@@ -48,8 +71,10 @@
     content: " ";
 }
 
-.item.list-group-item img
+.item .list-group-item img
 {
+    width: 50%;
+    height: auto;
     float: left;
 }
 .item.list-group-item:after
@@ -59,4 +84,47 @@
 .list-group-item-text
 {
     margin: 0 0 11px;
+}
+.edit
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.list-group-item
+{
+    display: flex;
+    flex-direction: row;
+}
+.subtotal{
+    margin-left: auto;
+    align-self: center;
+    color: dimgrey;
+}
+.total
+{
+    display: flex;
+    flex-direction: row-reverse;
+    align-self: end;
+}
+
+.badge {
+    padding-left: 9px;
+    padding-right: 9px;
+    -webkit-border-radius: 9px;
+    -moz-border-radius: 9px;
+    border-radius: 9px;
+}
+
+.label-warning[href],
+.badge-warning[href] {
+    background-color: #c67605;
+}
+#lblCartCount {
+    font-size: 12px;
+    background: #ff0000;
+    color: #fff;
+    padding: 0 5px;
+    vertical-align: top;
+    margin-left: -10px;
 }
