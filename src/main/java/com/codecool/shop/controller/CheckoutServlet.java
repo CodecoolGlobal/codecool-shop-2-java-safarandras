@@ -9,6 +9,8 @@ import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
 import com.codecool.shop.model.Cart;
 import com.codecool.shop.service.ProductService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -24,10 +26,12 @@ import java.io.IOException;
 @WebInitParam(name = "cartId", value = "0"))
 public class CheckoutServlet extends HttpServlet {
 
+    private static final Logger logger = LoggerFactory.getLogger(CheckoutServlet.class);
     CartDao cartDataStore = CartDaoMem.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info("checkout page call");
 
         String cartId = req.getParameter("cartId");
         int cId = 0;
