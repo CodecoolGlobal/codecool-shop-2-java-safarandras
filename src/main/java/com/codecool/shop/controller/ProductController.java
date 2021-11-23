@@ -21,10 +21,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @WebServlet(urlPatterns = {"/"}, initParams =
 @WebInitParam(name = "cartId", value = "0"))
 public class ProductController extends HttpServlet {
+    private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -62,6 +65,7 @@ public class ProductController extends HttpServlet {
         }else{
             context.setVariable("category", new ProductCategory("All Products", "", ""));
             context.setVariable("products", productService.getAllProducts());
+            logger.info("not parameterized main page call");
         }
 
         engine.process("product/index.html", context, resp.getWriter());
