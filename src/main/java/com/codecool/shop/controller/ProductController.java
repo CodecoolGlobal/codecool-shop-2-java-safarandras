@@ -8,7 +8,6 @@ import com.codecool.shop.dao.implementation.CartDaoMem;
 import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
-import com.codecool.shop.model.Cart;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.service.ProductService;
 import com.codecool.shop.config.TemplateEngineUtil;
