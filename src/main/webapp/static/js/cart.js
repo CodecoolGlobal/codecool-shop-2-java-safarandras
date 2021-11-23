@@ -4,17 +4,11 @@ const shoppingCart ={
     removeButtons: document.querySelectorAll(".remove"),
     quantitySelects: document.querySelectorAll("#quantity"),
     changeSubtotal: (newQuantity, subtotal, defaultCurrency, e) => {
-        console.log(typeof e.target.options.selectedIndex);
-        if (newQuantity !== e.target.options.selectedIndex) {
-            throw new Error("Selected quantity does not match updated quantity from backend.");
-        } else {
-            let itemId = e.target.dataset.id;
-            let subtotalElement = document.querySelector(`#product_${itemId} > .subtotal > p`);
-            subtotalElement.innerHTML = `Subtotal: ${subtotal} ${defaultCurrency}`;
-        }
+        let itemId = e.target.dataset.id;
+        let subtotalElement = document.querySelector(`#product_${itemId} > .subtotal > p`);
+        subtotalElement.innerHTML = `Subtotal: ${subtotal} ${defaultCurrency}`;
     },
-    changeTotal: (newQuantity, total, defaultCurrency, e) => {
-        console.log(typeof e.target.options.selectedIndex);
+    changeTotal: (newQuantity, total, defaultCurrency) => {
         document.querySelector(".total > p").innerHTML = `Total: ${total} ${defaultCurrency}`;
     },
     removeButtonHandler: async (e) => {
@@ -23,7 +17,7 @@ const shoppingCart ={
         if (deleteResponse.productId === parseInt(itemId)) {
             const defaultCurrency = deleteResponse.defaultCurrency;
             const total = deleteResponse.total;
-            shoppingCart.changeTotal(0, total, defaultCurrency, e);
+            shoppingCart.changeTotal(0, total, defaultCurrency);
             let container = document.querySelector("#cart");
             let domElement = document.querySelector(`#product_${itemId}`);
             container.removeChild(domElement);
@@ -51,7 +45,7 @@ const shoppingCart ={
                 const defaultCurrency = updateResponse.defaultCurrency;
                 const total = updateResponse.total;
                 shoppingCart.changeSubtotal(newQuantity, subtotal, defaultCurrency, e);
-                shoppingCart.changeTotal(newQuantity, total, defaultCurrency, e);
+                shoppingCart.changeTotal(newQuantity, total, defaultCurrency);
             }
         }
     },
