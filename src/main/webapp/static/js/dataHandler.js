@@ -34,7 +34,8 @@ async function apiDelete(url) {
         console.log(e);
         alert("Arrrrgh! Some error occurreD, we apologize for the inconvenience.");
     }
-    return response;
+    const res = await response.json()
+    return res
 }
 
 async function apiPost(url, payload) {
