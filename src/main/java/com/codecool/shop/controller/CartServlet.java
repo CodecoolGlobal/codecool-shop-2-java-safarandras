@@ -9,14 +9,10 @@ import com.codecool.shop.dao.implementation.CartDaoMem;
 import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
-import com.codecool.shop.model.Cart;
-import com.codecool.shop.model.Product;
+import com.codecool.shop.model.*;
 import com.codecool.shop.service.ProductService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.codecool.shop.model.CartUpdateResponse;
-import com.codecool.shop.model.LineItem;
-import com.codecool.shop.model.UpdateCartItem;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -89,27 +85,27 @@ public class CartServlet extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String cartId = req.getParameter("cartId");
-        int cId = 0;
-        if (cartId != null) {
-            cId = Integer.parseInt(cartId);
-        }
+        int cId = 0;    // put it into payload/session
 
         int itemId = Integer.parseInt(req.getParameter("itemId"));
         Cart cart = cartDataStore.find(cId);
         cart.remove(itemId);
+
+        Gson gson = new Gson();
+
+        DeleteItemResponse deleteItemResponse = new DeleteItemResponse();
+        deleteItemResponse.setProductId(itemId);
+        deleteItemResponse.setTotal(cart.calculateTotalPrice());
+        deleteItemResponse.setDefaultCurrency(cart.getDefaultCurrency());
+        String jsonString = gson.toJson(deleteItemResponse);
         PrintWriter response = resp.getWriter();
-        response.println("success");
+        response.println(jsonString);
     }
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String cartId = req.getParameter("cartId");
-        int cId = 0;
-        if (cartId != null) {
-            cId = Integer.parseInt(cartId);
-        }
+        int cId = 0;    // put it into payload/session
 
         Gson gson = new Gson();
         UpdateCartItem updateCartItem = gson.fromJson(req.getReader(), UpdateCartItem.class);
