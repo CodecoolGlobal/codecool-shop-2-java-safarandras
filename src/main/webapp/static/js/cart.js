@@ -45,12 +45,13 @@ const shoppingCart ={
             let itemId = e.target.dataset.id;
             let updateResponse = await dataHandler.changeItem(itemId, quantity);
             console.log(updateResponse);
-            if (updateResponse.productId === parseFloat(itemId)) {
+            if (updateResponse.ok && updateResponse.productId === parseFloat(itemId)) {
                 const newQuantity = updateResponse.quantity;
                 const subtotal = updateResponse.subtotal;
                 const defaultCurrency = updateResponse.defaultCurrency;
-                shoppingCart.changeSubtotal(e);
-                shoppingCart.changeTotal();
+                const total = updateResponse.total;
+                shoppingCart.changeSubtotal(e);     // use subtotal instead
+                shoppingCart.changeTotal();     // use total instead
             }
         }
     },
