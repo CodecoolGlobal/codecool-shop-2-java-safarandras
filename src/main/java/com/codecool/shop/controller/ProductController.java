@@ -1,8 +1,10 @@
 package com.codecool.shop.controller;
 
+import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.SupplierDao;
+import com.codecool.shop.dao.implementation.CartDaoMem;
 import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
@@ -14,19 +16,26 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = {"/"})
+@WebServlet(urlPatterns = {"/"}, initParams =
+@WebInitParam(name = "cartId", value = "0"))
 public class ProductController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        Cart cart = Cart.getInstance();
+        String cartId = req.getParameter("cartId");
+        int cId = 0;
+        if (cartId != null) {
+            cId = Integer.parseInt(cartId);
+        }
+        CartDao cartDataStore = CartDaoMem.getInstance();
 
         ProductDao productDataStore = ProductDaoMem.getInstance();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
@@ -39,7 +48,7 @@ public class ProductController extends HttpServlet {
         context.setVariable("categories", productService.getAllProductCategories());
         context.setVariable("suppliers", productService.getAllSupplier());
         context.setVariable("showCart", true);
-        context.setVariable("numberOfProductsInCart", productService.getNumberOfProductsInCart(cart));
+        context.setVariable("numberOfProductsInCart", productService.getNumberOfProductsInCart(cartDataStore.find(cId)));
 
         if (req.getParameter("categoryId") != null && Integer.parseInt(req.getParameter("categoryId")) > 0
                 && Integer.parseInt(req.getParameter("categoryId")) <= productService.getAllProductCategories().size()) {
