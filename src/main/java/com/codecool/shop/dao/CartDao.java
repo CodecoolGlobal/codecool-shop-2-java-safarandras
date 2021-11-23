@@ -3,15 +3,16 @@ package com.codecool.shop.dao;
 import com.codecool.shop.model.Cart;
 import com.codecool.shop.model.Product;
 
+import java.util.HashSet;
 import java.util.List;
 
 public interface CartDao {
 
-    void add(Product product);
-    Product find(int id);
-    void remove(int id);
+    void add(Cart cart);
+    Cart find(int cartId);
+    void remove(int cartId);
 
 
-    List<Product> getAll();
+    HashSet<Cart> getAll();
 
 }
