@@ -124,6 +124,7 @@ public class CartServlet extends HttpServlet {
         cartUpdateResponse.setProductId(item.getProduct().getId());
         cartUpdateResponse.setQuantity(item.getQuantity());
         cartUpdateResponse.setSubtotal(item.getSubtotal());
+        cartUpdateResponse.setTotal(cart.calculateTotalPrice());
         cartUpdateResponse.setDefaultCurrency(item.getDefaultCurrency());
         String jsonString = gson.toJson(cartUpdateResponse);
         PrintWriter response = resp.getWriter();
