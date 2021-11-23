@@ -17,6 +17,8 @@ import com.google.gson.reflect.TypeToken;
 import com.codecool.shop.model.CartUpdateResponse;
 import com.codecool.shop.model.LineItem;
 import com.codecool.shop.model.UpdateCartItem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -33,12 +35,13 @@ import java.io.PrintWriter;
 @WebServlet(urlPatterns = {"/cart", "/api/cart"}, initParams =
 @WebInitParam(name = "cartId", value = "0"))
 public class CartServlet extends HttpServlet {
-
+    private static final Logger logger = LoggerFactory.getLogger(CartServlet.class);
     CartDao cartDataStore = CartDaoMem.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        logger.info("shopping cart call");
         String cartId = req.getParameter("cartId");
         int id = 0;
         if (cartId != null) {
@@ -64,6 +67,7 @@ public class CartServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info("add element call");
 
         String cartId = req.getParameter("cartId");
         int cId = 0;
@@ -88,6 +92,7 @@ public class CartServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info("element delete call");
 
         String cartId = req.getParameter("cartId");
         int cId = 0;
@@ -104,6 +109,7 @@ public class CartServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info("element count modification call");
 
         String cartId = req.getParameter("cartId");
         int cId = 0;
