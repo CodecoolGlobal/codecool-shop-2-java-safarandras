@@ -37,7 +37,6 @@ import java.io.PrintWriter;
 @WebServlet(urlPatterns = {"/cart", "/api/cart"}, initParams =
 @WebInitParam(name = "cartId", value = "0"))
 public class CartServlet extends HttpServlet {
-    private ProductService productService;
     private static final Logger logger = LoggerFactory.getLogger(CartServlet.class);
     CartDao cartDataStore = CartDaoMem.getInstance();
 
@@ -76,11 +75,7 @@ public class CartServlet extends HttpServlet {
             cId = Integer.parseInt(cartId);
         }
 
-        ProductDao productDataStore = ProductDaoMem.getInstance();
-        ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
-        SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
-        ProductService productService = new ProductService(productDataStore, productCategoryDataStore, supplierDataStore);
-
+        ProductService productService = DaoSelector.getService();
         String body = req.getReader().readLine();
         Gson gson = new Gson();
         HashMap<String,Integer> productIdMap = gson.fromJson(body,new TypeToken<HashMap<String,Integer>>(){}.getType());
@@ -102,7 +97,7 @@ public class CartServlet extends HttpServlet {
         int itemId = Integer.parseInt(req.getParameter("itemId"));
         Cart cart = cartDataStore.find(cId);
         cart.remove(itemId);
-
+        ProductService productService = DaoSelector.getService();
         DeleteItemResponse deleteItemResponse = new DeleteItemResponse();
         deleteItemResponse = productService.fillDeleteItemResponse(deleteItemResponse, cart, itemId);
         String jsonString = productService.makeJsonStringFromResponse(deleteItemResponse);
@@ -125,7 +120,7 @@ public class CartServlet extends HttpServlet {
         int newQuantity = updateCartItem.getQuantity();
         Cart cart = cartDataStore.find(cId);
         cart.update(itemId, newQuantity);
-
+        ProductService productService = DaoSelector.getService();
         LineItem item = cart.find(itemId);
         CartUpdateResponse cartUpdateResponse = new CartUpdateResponse();
         cartUpdateResponse = productService.fillCartUpdateResponse(cartUpdateResponse, cart, item);
