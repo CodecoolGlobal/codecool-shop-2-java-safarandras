@@ -22,40 +22,14 @@ public class ProductService{
     private final ProductCategoryDao productCategoryDao;
     private final SupplierDao supplierDao;
 
-    public ProductService() throws SQLException {
-        DataSource dataSource = connect();
-        supplierDao = new SupplierJdbc(dataSource);
-        productCategoryDao = new ProductCategoryJdbc(dataSource);
-        productDao = new ProductJdbc(dataSource, productCategoryDao, supplierDao);
-    }
-
     public ProductService(ProductDao productDao, ProductCategoryDao productCategoryDao, SupplierDao supplierDao) {
         this.productDao = productDao;
         this.productCategoryDao = productCategoryDao;
         this.supplierDao = supplierDao;
     }
 
-    public ProductService(ProductCategoryDao productCategoryDao, SupplierDao supplierDao) {
-        this.productDao = null;
-        this.productCategoryDao = productCategoryDao;
-        this.supplierDao = supplierDao;
-    }
-
     public ProductCategory getProductCategory(int categoryId){
         return productCategoryDao.find(categoryId);
-    }
-
-    private DataSource connect() throws SQLException {
-        PGSimpleDataSource dataSource = new PGSimpleDataSource();
-        dataSource.setDatabaseName("ccshop");
-        dataSource.setUser("gyongyi");
-        dataSource.setPassword("mypsqlgyongyi");
-
-        System.out.println("Trying to connect...");
-        dataSource.getConnection().close();
-        System.out.println("Connection OK");
-
-        return dataSource;
     }
 
     public List<Product> getProductsForCategory(int categoryId){
