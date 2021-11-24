@@ -81,6 +81,8 @@ public class Cart {
                 count++;
                 sb.append("product id: ")
                         .append(lineItem.getProduct().getId())
+                        .append(", quantity: ")
+                        .append(lineItem.getQuantity())
                         .append(", name: ")
                         .append(lineItem.getName());
                 if (count != lineItems.size()) {
