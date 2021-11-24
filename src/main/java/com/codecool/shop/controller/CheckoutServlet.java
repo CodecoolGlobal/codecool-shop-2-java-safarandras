@@ -4,9 +4,9 @@ import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.SupplierDao;
-import com.codecool.shop.dao.implementation.CartDaoMem;
-import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
-import com.codecool.shop.dao.implementation.SupplierDaoMem;
+import com.codecool.shop.dao.memory.CartDaoMem;
+import com.codecool.shop.dao.memory.ProductCategoryDaoMem;
+import com.codecool.shop.dao.memory.SupplierDaoMem;
 import com.codecool.shop.model.Cart;
 import com.codecool.shop.service.ProductService;
 import org.slf4j.Logger;
@@ -21,10 +21,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebServlet(urlPatterns = {"/cart/checkout"}, initParams =
 @WebInitParam(name = "cartId", value = "0"))
 public class CheckoutServlet extends HttpServlet {
+    private ProductService productService;
 
     private static final Logger logger = LoggerFactory.getLogger(CheckoutServlet.class);
     CartDao cartDataStore = CartDaoMem.getInstance();
@@ -40,6 +42,19 @@ public class CheckoutServlet extends HttpServlet {
         }
 
         //dynamic data for header menu
+        if(true){
+            try {
+                productService = new ProductService();
+            } catch (SQLException e) {
+                System.err.println("Database connection unavailable!");
+                return;
+            }
+        }
+        else{
+            ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
+            SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
+            productService = new ProductService(productCategoryDataStore, supplierDataStore);
+        }
         Cart cart = cartDataStore.find(cId);
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
         SupplierDao supplierDataStore = SupplierDaoMem.getInstance();

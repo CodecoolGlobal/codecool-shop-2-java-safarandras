@@ -1,14 +1,9 @@
-package com.codecool.shop.dao.implementation;
+package com.codecool.shop.dao.memory;
 
-import com.codecool.shop.controller.ProductController;
 import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.model.Cart;
-import com.codecool.shop.model.Product;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
-import java.util.List;
 
 public class CartDaoMem implements CartDao {
 

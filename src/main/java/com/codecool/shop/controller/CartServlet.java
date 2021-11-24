@@ -5,10 +5,10 @@ import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.SupplierDao;
-import com.codecool.shop.dao.implementation.CartDaoMem;
-import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
-import com.codecool.shop.dao.implementation.ProductDaoMem;
-import com.codecool.shop.dao.implementation.SupplierDaoMem;
+import com.codecool.shop.dao.memory.CartDaoMem;
+import com.codecool.shop.dao.memory.ProductCategoryDaoMem;
+import com.codecool.shop.dao.memory.ProductDaoMem;
+import com.codecool.shop.dao.memory.SupplierDaoMem;
 import com.codecool.shop.model.*;
 import com.codecool.shop.service.ProductService;
 import com.google.gson.Gson;
@@ -28,12 +28,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.io.PrintWriter;
 
 @WebServlet(urlPatterns = {"/cart", "/api/cart"}, initParams =
 @WebInitParam(name = "cartId", value = "0"))
 public class CartServlet extends HttpServlet {
+    private ProductService productService;
     private static final Logger logger = LoggerFactory.getLogger(CartServlet.class);
     CartDao cartDataStore = CartDaoMem.getInstance();
 
@@ -48,9 +50,19 @@ public class CartServlet extends HttpServlet {
         }
 
         //dynamic data for header menu
-        ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
-        SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
-        ProductService productService = new ProductService(productCategoryDataStore, supplierDataStore);
+        if(true){
+            try {
+                productService = new ProductService();
+            } catch (SQLException e) {
+                System.err.println("Database connection unavailable!");
+                return;
+            }
+        }
+        else{
+            ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
+            SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
+            productService = new ProductService(productCategoryDataStore, supplierDataStore);
+        }
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
         context.setVariable("categories", productService.getAllProductCategories());
@@ -87,6 +99,8 @@ public class CartServlet extends HttpServlet {
         Cart cart = cartDataStore.find(cId);
         cart.add(product);
 
+        logger.info("Shopping cart current state: {}", cart.toString());
+
     }
 
     @Override
@@ -108,6 +122,8 @@ public class CartServlet extends HttpServlet {
         String jsonString = gson.toJson(deleteItemResponse);
         PrintWriter response = resp.getWriter();
         response.println(jsonString);
+
+        logger.info("Shopping cart current state: {}", cart.toString());
     }
 
     @Override
@@ -134,6 +150,8 @@ public class CartServlet extends HttpServlet {
         String jsonString = gson.toJson(cartUpdateResponse);
         PrintWriter response = resp.getWriter();
         response.println(jsonString);
+
+        logger.info("Shopping cart current state: {}", cart.toString());
 
     }
 }

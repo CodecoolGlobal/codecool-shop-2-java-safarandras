@@ -72,7 +72,7 @@ public class ProductJdbc implements ProductDao {
     public void remove(int id) {
         logger.debug("remove Product called");
         try (Connection connection = dataSource.getConnection()) {
-            String sql = "DELETE FROM product WHERE id = ?";
+            String sql = "DELETE FROM products WHERE id = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, id);
             statement.executeUpdate();
@@ -85,7 +85,7 @@ public class ProductJdbc implements ProductDao {
     public List<Product> getAll() {
         logger.debug("get all Product called");
         try(Connection connection = dataSource.getConnection()) {
-            String sql = "SELECT * FROM product";
+            String sql = "SELECT * FROM products";
             ResultSet resultSet = connection.createStatement().executeQuery(sql);
 
             List<Product> products = new ArrayList<>();
