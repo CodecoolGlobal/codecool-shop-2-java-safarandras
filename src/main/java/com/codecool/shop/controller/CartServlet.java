@@ -10,10 +10,11 @@ import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
 import com.codecool.shop.model.*;
+import com.codecool.shop.model.response.DeleteItemResponse;
 import com.codecool.shop.service.ProductService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.codecool.shop.model.CartUpdateResponse;
+import com.codecool.shop.model.response.CartUpdateResponse;
 import com.codecool.shop.model.LineItem;
 import com.codecool.shop.model.UpdateCartItem;
 import org.slf4j.Logger;
@@ -113,13 +114,9 @@ public class CartServlet extends HttpServlet {
         Cart cart = cartDataStore.find(cId);
         cart.remove(itemId);
 
-        Gson gson = new Gson();
-
         DeleteItemResponse deleteItemResponse = new DeleteItemResponse();
-        deleteItemResponse.setProductId(itemId);
-        deleteItemResponse.setTotal(cart.calculateTotalPrice());
-        deleteItemResponse.setDefaultCurrency(cart.getDefaultCurrency());
-        String jsonString = gson.toJson(deleteItemResponse);
+        deleteItemResponse = productService.fillDeleteItemResponse(deleteItemResponse, cart, itemId);
+        String jsonString = productService.makeJsonStringFromResponse(deleteItemResponse);
         PrintWriter response = resp.getWriter();
         response.println(jsonString);
 
@@ -142,12 +139,8 @@ public class CartServlet extends HttpServlet {
 
         LineItem item = cart.find(itemId);
         CartUpdateResponse cartUpdateResponse = new CartUpdateResponse();
-        cartUpdateResponse.setProductId(item.getProduct().getId());
-        cartUpdateResponse.setQuantity(item.getQuantity());
-        cartUpdateResponse.setSubtotal(item.getSubtotal());
-        cartUpdateResponse.setTotal(cart.calculateTotalPrice());
-        cartUpdateResponse.setDefaultCurrency(item.getDefaultCurrency());
-        String jsonString = gson.toJson(cartUpdateResponse);
+        cartUpdateResponse = productService.fillCartUpdateResponse(cartUpdateResponse, cart, item);
+        String jsonString = productService.makeJsonStringFromResponse(cartUpdateResponse);
         PrintWriter response = resp.getWriter();
         response.println(jsonString);
 
