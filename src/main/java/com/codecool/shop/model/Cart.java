@@ -67,6 +67,32 @@ public class Cart {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+    @Override
+    public String toString() {
+        int count = 0;
+        StringBuilder sb = new StringBuilder("Cart id: ")
+                .append(cartId);
+        if (lineItems.isEmpty()) {
+            sb.append(", cart is empty.");
+        } else {
+            sb.append(", ")
+                    .append("cart items: [");
+            for (LineItem lineItem : lineItems) {
+                count++;
+                sb.append("product id: ")
+                        .append(lineItem.getProduct().getId())
+                        .append(", name: ")
+                        .append(lineItem.getName());
+                if (count != lineItems.size()) {
+                    sb.append("; ");
+                } else {
+                    sb.append("]");
+                }
+            }
+        }
+        return sb.toString();
+    }
+
     public Currency getDefaultCurrency() {
         if (lineItems.isEmpty()) return null;
         return lineItems.stream().findFirst().get().getDefaultCurrency();
