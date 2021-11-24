@@ -87,6 +87,8 @@ public class CartServlet extends HttpServlet {
         Cart cart = cartDataStore.find(cId);
         cart.add(product);
 
+        logger.info("Shopping cart current state: {}", cart.toString());
+
     }
 
     @Override
@@ -108,6 +110,8 @@ public class CartServlet extends HttpServlet {
         String jsonString = gson.toJson(deleteItemResponse);
         PrintWriter response = resp.getWriter();
         response.println(jsonString);
+
+        logger.info("Shopping cart current state: {}", cart.toString());
     }
 
     @Override
@@ -134,6 +138,8 @@ public class CartServlet extends HttpServlet {
         String jsonString = gson.toJson(cartUpdateResponse);
         PrintWriter response = resp.getWriter();
         response.println(jsonString);
+
+        logger.info("Shopping cart current state: {}", cart.toString());
 
     }
 }
