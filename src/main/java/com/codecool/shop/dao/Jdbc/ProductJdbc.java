@@ -65,7 +65,7 @@ public class ProductJdbc implements ProductDao {
     @Override
     public void remove(int id) {
         try (Connection connection = dataSource.getConnection()) {
-            String sql = "DELETE FROM product WHERE id = ?";
+            String sql = "DELETE FROM products WHERE id = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, id);
             statement.executeUpdate();
@@ -77,7 +77,7 @@ public class ProductJdbc implements ProductDao {
     @Override
     public List<Product> getAll() {
         try(Connection connection = dataSource.getConnection()) {
-            String sql = "SELECT * FROM product";
+            String sql = "SELECT * FROM products";
             ResultSet resultSet = connection.createStatement().executeQuery(sql);
 
             List<Product> products = new ArrayList<>();
