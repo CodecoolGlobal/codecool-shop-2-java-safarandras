@@ -31,7 +31,7 @@ public class CheckoutServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.info("checkout page call");
+        logger.info("checkout page call by USER");
 
         String cartId = req.getParameter("cartId");
         int cId = 0;
