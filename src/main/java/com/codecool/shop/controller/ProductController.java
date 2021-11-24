@@ -65,7 +65,7 @@ public class ProductController extends HttpServlet {
         }else{
             context.setVariable("category", new ProductCategory("All Products", "", ""));
             context.setVariable("products", productService.getAllProducts());
-            logger.info("not parameterized main page call");
+            logger.info("not parameterized main page call by USER");
         }
 
         engine.process("product/index.html", context, resp.getWriter());
