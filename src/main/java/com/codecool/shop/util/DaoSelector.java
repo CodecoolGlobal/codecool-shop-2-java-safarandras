@@ -42,9 +42,9 @@ public class DaoSelector {
 
     public static DataSource connect() throws SQLException {
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
-        dataSource.setDatabaseName("ccshop");
-        dataSource.setUser("gyongyi");
-        dataSource.setPassword("mypsqlgyongyi");
+        dataSource.setDatabaseName("codecoolshop");
+        dataSource.setUser("safarandras");
+        dataSource.setPassword("safarandras");
 
         System.out.println("Trying to connect...");
         dataSource.getConnection().close();
