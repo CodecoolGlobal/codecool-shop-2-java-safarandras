@@ -42,7 +42,6 @@ public class CheckoutServlet extends HttpServlet {
         }
 
         //dynamic data for header menu
-        Cart cart = Cart.getInstance();
         if(true){
             try {
                 productService = new ProductService();
