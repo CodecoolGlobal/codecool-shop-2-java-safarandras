@@ -43,7 +43,6 @@ import org.slf4j.LoggerFactory;
         CartDao cartDataStore = CartDaoMem.getInstance();
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
-
         context.setVariable("categories", productService.getAllProductCategories());
         context.setVariable("suppliers", productService.getAllSupplier());
         context.setVariable("showCart", true);
