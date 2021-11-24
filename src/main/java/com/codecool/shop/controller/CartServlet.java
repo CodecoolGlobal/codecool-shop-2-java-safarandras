@@ -24,19 +24,31 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.io.PrintWriter;
 
 @WebServlet(urlPatterns = {"/cart", "/api/cart"})
 public class CartServlet extends HttpServlet {
+    private ProductService productService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         //dynamic data for header menu
-        ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
-        SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
-        ProductService productService = new ProductService(productCategoryDataStore, supplierDataStore);
+        if(true){
+            try {
+                productService = new ProductService();
+            } catch (SQLException e) {
+                System.err.println("Database connection unavailable!");
+                return;
+            }
+        }
+        else{
+            ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
+            SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
+            productService = new ProductService(productCategoryDataStore, supplierDataStore);
+        }
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
         context.setVariable("categories", productService.getAllProductCategories());
