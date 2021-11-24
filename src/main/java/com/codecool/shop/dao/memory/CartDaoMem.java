@@ -1,10 +1,4 @@
-package com.codecool.shop.dao.implementation;
-
-import com.codecool.shop.dao.CartDao;
-import com.codecool.shop.model.Cart;
-import com.codecool.shop.model.Product;
-
-import java.util.List;
+package com.codecool.shop.dao.memory;
 
 //public class CartDaoMem implements CartDao {
 //
