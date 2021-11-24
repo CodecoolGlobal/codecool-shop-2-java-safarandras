@@ -1,10 +1,7 @@
 package com.codecool.shop.dao.Jdbc;
 
 import com.codecool.shop.dao.ProductCategoryDao;
-import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.model.ProductCategory;
-import com.codecool.shop.model.Supplier;
-import org.postgresql.replication.PGReplicationConnectionImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
