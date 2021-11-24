@@ -1,5 +1,9 @@
 package com.codecool.shop.model;
 
+import com.codecool.shop.controller.CartServlet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -8,6 +12,7 @@ public class Cart {
     private int cartId;
     private int userId;
     private HashSet<LineItem> lineItems;
+    private static final Logger logger = LoggerFactory.getLogger(Cart.class);
 
     public Cart() {
         lineItems = new HashSet<>();
@@ -23,12 +28,11 @@ public class Cart {
                 }
             }
             newItem.setId(lineItems.size() + 1);
-            lineItems.add(newItem);
         } else {
             newItem.setId(1);
-            lineItems.add(newItem);
         }
-
+        lineItems.add(newItem);
+        logger.info("item added to cart");
     }
 
     public LineItem find(int id) {
@@ -45,10 +49,12 @@ public class Cart {
         } else {
             itemToUpdate.setQuantityAndUpdateSubtotal(newQuantity);
         }
+        logger.info("item updated in cart");
     }
 
     public void remove(int id) {
         lineItems.remove(find(id));
+        logger.info("item removed from cart");
     }
 
     public HashSet<LineItem> getAllLineItem() {

@@ -3,9 +3,12 @@ package com.codecool.shop.dao.Jdbc;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.SupplierDao;
+import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.math.BigDecimal;
@@ -20,6 +23,7 @@ public class ProductJdbc implements ProductDao {
     private DataSource dataSource;
     private ProductCategoryDao productCategoryDao;
     private SupplierDao supplierDao;
+    private static final Logger logger = LoggerFactory.getLogger(ProductJdbc.class);
 
     public ProductJdbc(DataSource dataSource, ProductCategoryDao productCategoryDao, SupplierDao supplierDao){
         this.dataSource = dataSource;
@@ -29,6 +33,7 @@ public class ProductJdbc implements ProductDao {
 
     @Override
     public void add(Product product) {
+        logger.debug("add Product called");
         try (Connection connection = dataSource.getConnection()) {
             String sql = "INSERT INTO products(name, price, currency, description, categoryID, supplierID, imageRoute) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -47,6 +52,7 @@ public class ProductJdbc implements ProductDao {
 
     @Override
     public Product find(int id) {
+        logger.debug("find Product called");
         try(Connection connection = dataSource.getConnection()){
             String sql = "SELECT * FROM products WHERE id = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -64,6 +70,7 @@ public class ProductJdbc implements ProductDao {
 
     @Override
     public void remove(int id) {
+        logger.debug("remove Product called");
         try (Connection connection = dataSource.getConnection()) {
             String sql = "DELETE FROM products WHERE id = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -76,6 +83,7 @@ public class ProductJdbc implements ProductDao {
 
     @Override
     public List<Product> getAll() {
+        logger.debug("get all Product called");
         try(Connection connection = dataSource.getConnection()) {
             String sql = "SELECT * FROM products";
             ResultSet resultSet = connection.createStatement().executeQuery(sql);
@@ -94,6 +102,7 @@ public class ProductJdbc implements ProductDao {
 
     @Override
     public List<Product> getBy(Supplier supplier) {
+        logger.debug("Product get by Supplier ({}) called",supplier.getName());
         try(Connection connection = dataSource.getConnection()){
             String sql = "SELECT p.* FROM products p JOIN suppliers s ON p.supplierID = s.id WHERE s.id = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -114,6 +123,7 @@ public class ProductJdbc implements ProductDao {
 
     @Override
     public List<Product> getBy(ProductCategory productCategory) {
+        logger.debug("Product get by ProductCategory ({}) called",productCategory.getName());
         try(Connection connection = dataSource.getConnection()){
             String sql = "SELECT p.* FROM products p JOIN productcategories c ON p.categoryID = c.id WHERE c.id = ?";
             PreparedStatement statement = connection.prepareStatement(sql);

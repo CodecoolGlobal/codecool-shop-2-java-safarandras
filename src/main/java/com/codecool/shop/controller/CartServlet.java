@@ -43,7 +43,7 @@ public class CartServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        logger.info("shopping cart call");
+        logger.info("shopping cart call by USER");
         String cartId = req.getParameter("cartId");
         int id = 0;
         if (cartId != null) {
@@ -79,7 +79,7 @@ public class CartServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.info("add element call");
+        logger.info("add element call by USER");
 
         String cartId = req.getParameter("cartId");
         int cId = 0;
@@ -106,7 +106,7 @@ public class CartServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.info("element delete call");
+        logger.info("element delete call by USER");
 
         int cId = 0;    // put it into payload/session
 
@@ -125,7 +125,7 @@ public class CartServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.info("element count modification call");
+        logger.info("element count modification call by USER");
 
         int cId = 0;    // put it into payload/session
 
