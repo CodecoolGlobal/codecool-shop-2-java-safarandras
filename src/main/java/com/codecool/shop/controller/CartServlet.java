@@ -1,24 +1,28 @@
 package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
+import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.SupplierDao;
+import com.codecool.shop.dao.implementation.CartDaoMem;
 import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
-import com.codecool.shop.model.Cart;
-import com.codecool.shop.model.Product;
+import com.codecool.shop.model.*;
 import com.codecool.shop.service.ProductService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.codecool.shop.model.CartUpdateResponse;
 import com.codecool.shop.model.LineItem;
 import com.codecool.shop.model.UpdateCartItem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -28,12 +32,22 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.io.PrintWriter;
 
-@WebServlet(urlPatterns = {"/cart", "/api/cart"})
+@WebServlet(urlPatterns = {"/cart", "/api/cart"}, initParams =
+@WebInitParam(name = "cartId", value = "0"))
 public class CartServlet extends HttpServlet {
     private ProductService productService;
+    private static final Logger logger = LoggerFactory.getLogger(CartServlet.class);
+    CartDao cartDataStore = CartDaoMem.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        logger.info("shopping cart call");
+        String cartId = req.getParameter("cartId");
+        int id = 0;
+        if (cartId != null) {
+            id = Integer.parseInt(cartId);
+        }
 
         //dynamic data for header menu
         if(true){
@@ -55,7 +69,7 @@ public class CartServlet extends HttpServlet {
         context.setVariable("suppliers", productService.getAllSupplier());
         context.setVariable("showCart", false);
 
-        Cart cart = Cart.getInstance();
+        Cart cart = cartDataStore.find(id);
         context.setVariable("products", cart.getAllLineItem());
         context.setVariable("total", cart.calculateTotalPrice());
         context.setVariable("currency", cart.getDefaultCurrency());
@@ -64,6 +78,14 @@ public class CartServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info("add element call");
+
+        String cartId = req.getParameter("cartId");
+        int cId = 0;
+        if (cartId != null) {
+            cId = Integer.parseInt(cartId);
+        }
+
         ProductDao productDataStore = ProductDaoMem.getInstance();
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
         SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
@@ -74,36 +96,52 @@ public class CartServlet extends HttpServlet {
         HashMap<String,Integer> productIdMap = gson.fromJson(body,new TypeToken<HashMap<String,Integer>>(){}.getType());
         int productId = productIdMap.get("productId");
         Product product = productService.getProduct(productId);
-        Cart cart = Cart.getInstance();
+        Cart cart = cartDataStore.find(cId);
         cart.add(product);
 
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int id = Integer.parseInt(req.getParameter("itemId"));
-        Cart cart = Cart.getInstance();
-        cart.remove(id);
+        logger.info("element delete call");
+
+        int cId = 0;    // put it into payload/session
+
+        int itemId = Integer.parseInt(req.getParameter("itemId"));
+        Cart cart = cartDataStore.find(cId);
+        cart.remove(itemId);
+
+        Gson gson = new Gson();
+
+        DeleteItemResponse deleteItemResponse = new DeleteItemResponse();
+        deleteItemResponse.setProductId(itemId);
+        deleteItemResponse.setTotal(cart.calculateTotalPrice());
+        deleteItemResponse.setDefaultCurrency(cart.getDefaultCurrency());
+        String jsonString = gson.toJson(deleteItemResponse);
         PrintWriter response = resp.getWriter();
-        response.println("success");
+        response.println(jsonString);
     }
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info("element count modification call");
+
+        int cId = 0;    // put it into payload/session
 
         Gson gson = new Gson();
         UpdateCartItem updateCartItem = gson.fromJson(req.getReader(), UpdateCartItem.class);
 
-        int id = updateCartItem.getItemId();
+        int itemId = updateCartItem.getItemId();
         int newQuantity = updateCartItem.getQuantity();
-        Cart cart = Cart.getInstance();
-        cart.update(id, newQuantity);
+        Cart cart = cartDataStore.find(cId);
+        cart.update(itemId, newQuantity);
 
-        LineItem item = cart.find(id);
+        LineItem item = cart.find(itemId);
         CartUpdateResponse cartUpdateResponse = new CartUpdateResponse();
         cartUpdateResponse.setProductId(item.getProduct().getId());
         cartUpdateResponse.setQuantity(item.getQuantity());
         cartUpdateResponse.setSubtotal(item.getSubtotal());
+        cartUpdateResponse.setTotal(cart.calculateTotalPrice());
         cartUpdateResponse.setDefaultCurrency(item.getDefaultCurrency());
         String jsonString = gson.toJson(cartUpdateResponse);
         PrintWriter response = resp.getWriter();

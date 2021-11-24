@@ -3,29 +3,24 @@ import {dataHandler} from "./dataHandler.js";
 const shoppingCart ={
     removeButtons: document.querySelectorAll(".remove"),
     quantitySelects: document.querySelectorAll("#quantity"),
-    changeSubtotal: (e) => {
-        let quantity = e.target.options.selectedIndex;
+    changeSubtotal: (newQuantity, subtotal, defaultCurrency, e) => {
         let itemId = e.target.dataset.id;
-        let unitPrice = parseFloat(document.querySelector(`#product_${itemId} > .list-group-item-text > .unit-price`).innerHTML);
-        let subtotal = document.querySelector(`#product_${itemId} > .subtotal > p`);
-        subtotal.innerHTML = `Subtotal: ${quantity * unitPrice} USD`;
+        let subtotalElement = document.querySelector(`#product_${itemId} > .subtotal > p`);
+        subtotalElement.innerHTML = `Subtotal: ${subtotal} ${defaultCurrency}`;
     },
-    changeTotal: () => {
-        let subtotals = document.querySelectorAll(".subtotal > p")
-        let total = 0
-        for(let subtotal of subtotals){
-            total += parseFloat(subtotal.innerHTML.split(" ")[1]);
-        }
-        document.querySelector(".total > p").innerHTML = `Total: ${total} USD`
+    changeTotal: (newQuantity, total, defaultCurrency) => {
+        document.querySelector(".total > p").innerHTML = `Total: ${total} ${defaultCurrency}`;
     },
     removeButtonHandler: async (e) => {
         let itemId = e.target.dataset.id;
         let deleteResponse = await dataHandler.deleteItem(itemId);
-        if (deleteResponse.ok) {
+        if (deleteResponse.productId === parseInt(itemId)) {
+            const defaultCurrency = deleteResponse.defaultCurrency;
+            const total = deleteResponse.total;
+            shoppingCart.changeTotal(0, total, defaultCurrency);
             let container = document.querySelector("#cart");
             let domElement = document.querySelector(`#product_${itemId}`);
             container.removeChild(domElement);
-            shoppingCart.changeTotal();
             if(container.querySelectorAll(`.list-group-item`).length === 0){
                 container.innerHTML =
                     `<div class="container">
@@ -44,13 +39,13 @@ const shoppingCart ={
             let quantity = e.target.options.selectedIndex;
             let itemId = e.target.dataset.id;
             let updateResponse = await dataHandler.changeItem(itemId, quantity);
-            console.log(updateResponse);
-            if (updateResponse.productId === parseFloat(itemId)) {
+            if (updateResponse.productId === parseInt(itemId)) {
                 const newQuantity = updateResponse.quantity;
                 const subtotal = updateResponse.subtotal;
                 const defaultCurrency = updateResponse.defaultCurrency;
-                shoppingCart.changeSubtotal(e);
-                shoppingCart.changeTotal();
+                const total = updateResponse.total;
+                shoppingCart.changeSubtotal(newQuantity, subtotal, defaultCurrency, e);
+                shoppingCart.changeTotal(newQuantity, total, defaultCurrency);
             }
         }
     },

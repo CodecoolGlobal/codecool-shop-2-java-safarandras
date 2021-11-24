@@ -3,24 +3,14 @@ package com.codecool.shop.model;
 import java.math.BigDecimal;
 import java.util.Currency;
 
-public class CartUpdateResponse {
+public class DeleteItemResponse {
 
     private int productId;
-    private int quantity;
-    private BigDecimal subtotal;
     private Currency defaultCurrency;
     private BigDecimal total;
 
     public void setProductId(int productId) {
         this.productId = productId;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public void setSubtotal(BigDecimal subtotal) {
-        this.subtotal = subtotal;
     }
 
     public void setDefaultCurrency(Currency defaultCurrency) {

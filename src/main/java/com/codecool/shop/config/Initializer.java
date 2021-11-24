@@ -1,11 +1,14 @@
 package com.codecool.shop.config;
 
+import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.SupplierDao;
+import com.codecool.shop.dao.implementation.CartDaoMem;
 import com.codecool.shop.dao.implementation.ProductCategoryDaoMem;
 import com.codecool.shop.dao.implementation.ProductDaoMem;
 import com.codecool.shop.dao.implementation.SupplierDaoMem;
+import com.codecool.shop.model.Cart;
 import com.codecool.shop.model.Product;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.model.Supplier;
@@ -20,6 +23,7 @@ public class Initializer implements ServletContextListener {
     private final ProductDao productDataStore = ProductDaoMem.getInstance();
     private final ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
     private final SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
+    private final CartDao cartDataStore = CartDaoMem.getInstance();
 
     private Supplier addSupplier(String name, String description){
         Supplier supplier = new Supplier(name, description);
@@ -31,6 +35,13 @@ public class Initializer implements ServletContextListener {
         ProductCategory productCategory = new ProductCategory(name, department, description);
         productCategoryDataStore.add(productCategory);
         return productCategory;
+    }
+
+    private void addInitialCart() {
+        //setting up an empty initial cart
+        Cart initCart = new Cart();
+        initCart.setCartId(0);
+        cartDataStore.add(initCart);
     }
 
     @Override
@@ -160,5 +171,9 @@ public class Initializer implements ServletContextListener {
                 new BigDecimal("24.99"),
                 "USD",
                 "Nessie believes in you!", tShirt, nessie, "nessie_believe_in_yourself.png"));
+
+        addInitialCart();
     }
+
+
 }

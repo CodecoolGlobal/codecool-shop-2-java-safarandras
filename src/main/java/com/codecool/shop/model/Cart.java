@@ -5,18 +5,12 @@ import java.util.*;
 
 public class Cart {
 
+    private int cartId;
+    private int userId;
     private HashSet<LineItem> lineItems;
-    private static Cart instance;
 
-    private Cart() {
+    public Cart() {
         lineItems = new HashSet<>();
-    }
-
-    public static Cart getInstance() {
-        if (instance == null) {
-            instance = new Cart();
-        }
-        return instance;
     }
 
     public void add(Product product) {
@@ -78,4 +72,19 @@ public class Cart {
         return lineItems.stream().findFirst().get().getDefaultCurrency();
     }
 
+    public int getCartId() {
+        return cartId;
+    }
+
+    public void setCartId(int cartId) {
+        this.cartId = cartId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 }
