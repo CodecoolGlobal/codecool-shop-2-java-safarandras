@@ -6,14 +6,14 @@ import com.codecool.shop.dao.Jdbc.SupplierJdbc;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.SupplierDao;
-import com.codecool.shop.model.Cart;
-import com.codecool.shop.model.Product;
-import com.codecool.shop.model.ProductCategory;
-import com.codecool.shop.model.Supplier;
+import com.codecool.shop.model.*;
+import com.codecool.shop.model.response.CartUpdateResponse;
+import com.codecool.shop.model.response.DeleteItemResponse;
+import com.codecool.shop.model.response.Response;
+import com.google.gson.Gson;
 import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.sql.DataSource;
-import javax.xml.crypto.Data;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -47,9 +47,9 @@ public class ProductService{
 
     private DataSource connect() throws SQLException {
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
-        dataSource.setDatabaseName("codecoolshop");
-        dataSource.setUser("safarandras");
-        dataSource.setPassword("safarandras");
+        dataSource.setDatabaseName("ccshop");
+        dataSource.setUser("gyongyi");
+        dataSource.setPassword("mypsqlgyongyi");
 
         System.out.println("Trying to connect...");
         dataSource.getConnection().close();
@@ -91,4 +91,26 @@ public class ProductService{
     public int getNumberOfProductsInCart(Cart cart){
         return cart.getNumberOfProductsInCart();
     }
+
+    public DeleteItemResponse fillDeleteItemResponse(DeleteItemResponse deleteItemResponse, Cart cart, int itemId) {
+        deleteItemResponse.setProductId(itemId);
+        deleteItemResponse.setTotal(cart.calculateTotalPrice());
+        deleteItemResponse.setDefaultCurrency(cart.getDefaultCurrency());
+        return deleteItemResponse;
+    }
+
+    public String makeJsonStringFromResponse(Response response) {
+        Gson gson = new Gson();
+        return gson.toJson(response);
+    }
+
+    public CartUpdateResponse fillCartUpdateResponse(CartUpdateResponse cartUpdateResponse, Cart cart, LineItem item) {
+        cartUpdateResponse.setProductId(item.getProduct().getId());
+        cartUpdateResponse.setQuantity(item.getQuantity());
+        cartUpdateResponse.setSubtotal(item.getSubtotal());
+        cartUpdateResponse.setTotal(cart.calculateTotalPrice());
+        cartUpdateResponse.setDefaultCurrency(item.getDefaultCurrency());
+        return cartUpdateResponse;
+    }
+
 }
