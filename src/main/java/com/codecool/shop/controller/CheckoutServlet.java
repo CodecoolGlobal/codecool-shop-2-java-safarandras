@@ -9,6 +9,7 @@ import com.codecool.shop.dao.memory.ProductCategoryDaoMem;
 import com.codecool.shop.dao.memory.SupplierDaoMem;
 import com.codecool.shop.model.Cart;
 import com.codecool.shop.service.ProductService;
+import com.codecool.shop.util.DaoSelector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.thymeleaf.TemplateEngine;
@@ -42,23 +43,8 @@ public class CheckoutServlet extends HttpServlet {
         }
 
         //dynamic data for header menu
-        if(true){
-            try {
-                productService = new ProductService();
-            } catch (SQLException e) {
-                System.err.println("Database connection unavailable!");
-                return;
-            }
-        }
-        else{
-            ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
-            SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
-            productService = new ProductService(productCategoryDataStore, supplierDataStore);
-        }
+        ProductService productService = DaoSelector.getService();
         Cart cart = cartDataStore.find(cId);
-        ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
-        SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
-        ProductService productService = new ProductService(productCategoryDataStore, supplierDataStore);
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
         context.setVariable("categories", productService.getAllProductCategories());
