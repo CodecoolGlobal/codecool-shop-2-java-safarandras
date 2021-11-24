@@ -45,6 +45,7 @@ public class ProductJdbc implements ProductDao {
             statement.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            logger.error("Database insert failed");
         }
     }
 
@@ -62,6 +63,7 @@ public class ProductJdbc implements ProductDao {
             return createProduct(resultSet);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            logger.error("Database select failed");
             return null;
         }
     }
@@ -76,6 +78,7 @@ public class ProductJdbc implements ProductDao {
             statement.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            logger.error("Database delete failed");
         }
     }
 
@@ -94,6 +97,7 @@ public class ProductJdbc implements ProductDao {
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            logger.error("Database select failed");
             return null;
         }
     }
@@ -115,6 +119,7 @@ public class ProductJdbc implements ProductDao {
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            logger.error("Database select failed");
             return null;
         }
     }
@@ -136,6 +141,7 @@ public class ProductJdbc implements ProductDao {
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            logger.error("Database select failed");
             return null;
         }
     }

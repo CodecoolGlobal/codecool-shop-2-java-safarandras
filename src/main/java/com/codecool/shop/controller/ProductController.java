@@ -46,6 +46,7 @@ import org.slf4j.LoggerFactory;
                 productService = new ProductService();
             } catch (SQLException e) {
                 System.err.println("Database connection unavailable!");
+                logger.error("Database connection unavailable");
                 return;
             }
         }

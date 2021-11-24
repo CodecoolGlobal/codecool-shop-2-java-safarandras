@@ -33,6 +33,7 @@ public class ProductCategoryJdbc implements ProductCategoryDao {
             statement.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            logger.error("Database insert failed");
         }
     }
 
@@ -54,6 +55,7 @@ public class ProductCategoryJdbc implements ProductCategoryDao {
         }
         catch (SQLException throwables) {
             throwables.printStackTrace();
+            logger.error("Database select failed");
             return null;
         }
     }
@@ -69,6 +71,7 @@ public class ProductCategoryJdbc implements ProductCategoryDao {
         }
         catch (SQLException throwables) {
         throwables.printStackTrace();
+            logger.error("Database delete failed");
         }
 
     }
@@ -90,6 +93,7 @@ public class ProductCategoryJdbc implements ProductCategoryDao {
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            logger.error("Database select failed");
             return null;
         }
     }
