@@ -1,4 +1,4 @@
-package com.codecool.shop.dao.memory;
+package com.codecool.shop.dao.implementation;
 
 
 import com.codecool.shop.dao.ProductDao;
