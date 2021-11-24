@@ -21,12 +21,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @WebServlet(urlPatterns = {"/"}, initParams =
 @WebInitParam(name = "cartId", value = "0"))
-public class ProductController extends HttpServlet {
+    public class ProductController extends HttpServlet {
+    private ProductService productService;
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     @Override
@@ -39,10 +41,20 @@ public class ProductController extends HttpServlet {
         }
         CartDao cartDataStore = CartDaoMem.getInstance();
 
-        ProductDao productDataStore = ProductDaoMem.getInstance();
-        ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
-        SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
-        ProductService productService = new ProductService(productDataStore, productCategoryDataStore, supplierDataStore);
+        if(true){
+            try {
+                productService = new ProductService();
+            } catch (SQLException e) {
+                System.err.println("Database connection unavailable!");
+                return;
+            }
+        }
+        else {
+            ProductDao productDataStore = ProductDaoMem.getInstance();
+            ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
+            SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
+            productService = new ProductService(productDataStore, productCategoryDataStore, supplierDataStore);
+        }
 
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());

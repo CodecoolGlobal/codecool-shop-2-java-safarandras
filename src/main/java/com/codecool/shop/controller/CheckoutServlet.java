@@ -21,10 +21,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebServlet(urlPatterns = {"/cart/checkout"}, initParams =
 @WebInitParam(name = "cartId", value = "0"))
 public class CheckoutServlet extends HttpServlet {
+    private ProductService productService;
 
     private static final Logger logger = LoggerFactory.getLogger(CheckoutServlet.class);
     CartDao cartDataStore = CartDaoMem.getInstance();
@@ -40,6 +42,20 @@ public class CheckoutServlet extends HttpServlet {
         }
 
         //dynamic data for header menu
+        Cart cart = Cart.getInstance();
+        if(true){
+            try {
+                productService = new ProductService();
+            } catch (SQLException e) {
+                System.err.println("Database connection unavailable!");
+                return;
+            }
+        }
+        else{
+            ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
+            SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
+            productService = new ProductService(productCategoryDataStore, supplierDataStore);
+        }
         Cart cart = cartDataStore.find(cId);
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
         SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
