@@ -9,6 +9,7 @@ import com.codecool.shop.dao.memory.ProductCategoryDaoMem;
 import com.codecool.shop.dao.memory.ProductDaoMem;
 import com.codecool.shop.dao.memory.SupplierDaoMem;
 import com.codecool.shop.model.ProductCategory;
+import com.codecool.shop.service.CartService;
 import com.codecool.shop.service.ProductService;
 import com.codecool.shop.config.TemplateEngineUtil;
 import org.thymeleaf.TemplateEngine;
@@ -29,6 +30,7 @@ import org.slf4j.LoggerFactory;
 @WebInitParam(name = "cartId", value = "0"))
     public class ProductController extends HttpServlet {
     private ProductService productService;
+    private CartService cartService = new CartService(CartDaoMem.getInstance());
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     @Override
@@ -62,7 +64,7 @@ import org.slf4j.LoggerFactory;
         context.setVariable("categories", productService.getAllProductCategories());
         context.setVariable("suppliers", productService.getAllSupplier());
         context.setVariable("showCart", true);
-        context.setVariable("numberOfProductsInCart", productService.getNumberOfProductsInCart(cartDataStore.find(cId)));
+        context.setVariable("numberOfProductsInCart", cartService.getNumberOfProductsInCart(cartDataStore.find(cId)));
 
         if (req.getParameter("categoryId") != null && Integer.parseInt(req.getParameter("categoryId")) > 0
                 && Integer.parseInt(req.getParameter("categoryId")) <= productService.getAllProductCategories().size()) {

@@ -8,6 +8,7 @@ import com.codecool.shop.dao.memory.CartDaoMem;
 import com.codecool.shop.dao.memory.ProductCategoryDaoMem;
 import com.codecool.shop.dao.memory.SupplierDaoMem;
 import com.codecool.shop.model.Cart;
+import com.codecool.shop.service.CartService;
 import com.codecool.shop.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,9 +28,9 @@ import java.sql.SQLException;
 @WebInitParam(name = "cartId", value = "0"))
 public class CheckoutServlet extends HttpServlet {
     private ProductService productService;
+    private CartService cartService = new CartService(CartDaoMem.getInstance());
 
     private static final Logger logger = LoggerFactory.getLogger(CheckoutServlet.class);
-    CartDao cartDataStore = CartDaoMem.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -55,7 +56,7 @@ public class CheckoutServlet extends HttpServlet {
             SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
             productService = new ProductService(productCategoryDataStore, supplierDataStore);
         }
-        Cart cart = cartDataStore.find(cId);
+        Cart cart = cartService.findCart(cId);
         ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
         SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
         ProductService productService = new ProductService(productCategoryDataStore, supplierDataStore);
@@ -68,7 +69,7 @@ public class CheckoutServlet extends HttpServlet {
         context.setVariable("products", cart.getAllLineItem());
         context.setVariable("total", cart.calculateTotalPrice());
         context.setVariable("currency", cart.getDefaultCurrency());
-        context.setVariable("numberOfProductsInCart", productService.getNumberOfProductsInCart(cart));
+        context.setVariable("numberOfProductsInCart", cartService.getNumberOfProductsInCart(cart));
         engine.process("product/checkout.html", context, resp.getWriter());
     }
 }

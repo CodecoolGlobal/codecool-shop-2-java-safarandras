@@ -11,6 +11,7 @@ import com.codecool.shop.dao.memory.ProductDaoMem;
 import com.codecool.shop.dao.memory.SupplierDaoMem;
 import com.codecool.shop.model.*;
 import com.codecool.shop.model.response.DeleteItemResponse;
+import com.codecool.shop.service.CartService;
 import com.codecool.shop.service.ProductService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -38,16 +39,17 @@ import java.io.PrintWriter;
 public class CartServlet extends HttpServlet {
     private ProductService productService;
     private static final Logger logger = LoggerFactory.getLogger(CartServlet.class);
-    CartDao cartDataStore = CartDaoMem.getInstance();
+    private CartDao cartDao = CartDaoMem.getInstance();
+    private CartService cartService = new CartService(cartDao);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         logger.info("shopping cart call");
         String cartId = req.getParameter("cartId");
-        int id = 0;
+        int cId = 0;
         if (cartId != null) {
-            id = Integer.parseInt(cartId);
+            cId = Integer.parseInt(cartId);
         }
 
         //dynamic data for header menu
@@ -70,7 +72,7 @@ public class CartServlet extends HttpServlet {
         context.setVariable("suppliers", productService.getAllSupplier());
         context.setVariable("showCart", false);
 
-        Cart cart = cartDataStore.find(id);
+        Cart cart = cartService.findCart(cId);
         context.setVariable("products", cart.getAllLineItem());
         context.setVariable("total", cart.calculateTotalPrice());
         context.setVariable("currency", cart.getDefaultCurrency());
@@ -97,7 +99,7 @@ public class CartServlet extends HttpServlet {
         HashMap<String,Integer> productIdMap = gson.fromJson(body,new TypeToken<HashMap<String,Integer>>(){}.getType());
         int productId = productIdMap.get("productId");
         Product product = productService.getProduct(productId);
-        Cart cart = cartDataStore.find(cId);
+        Cart cart = cartService.findCart(cId);
         cart.add(product);
 
         logger.info("Shopping cart current state: {}", cart.toString());
@@ -111,12 +113,12 @@ public class CartServlet extends HttpServlet {
         int cId = 0;    // put it into payload/session
 
         int itemId = Integer.parseInt(req.getParameter("itemId"));
-        Cart cart = cartDataStore.find(cId);
+        Cart cart = cartService.findCart(cId);
         cart.remove(itemId);
 
         DeleteItemResponse deleteItemResponse = new DeleteItemResponse();
-        deleteItemResponse = productService.fillDeleteItemResponse(deleteItemResponse, cart, itemId);
-        String jsonString = productService.makeJsonStringFromResponse(deleteItemResponse);
+        deleteItemResponse = cartService.fillDeleteItemResponse(deleteItemResponse, cart, itemId);
+        String jsonString = cartService.makeJsonStringFromResponse(deleteItemResponse);
         PrintWriter response = resp.getWriter();
         response.println(jsonString);
 
@@ -134,13 +136,13 @@ public class CartServlet extends HttpServlet {
 
         int itemId = updateCartItem.getItemId();
         int newQuantity = updateCartItem.getQuantity();
-        Cart cart = cartDataStore.find(cId);
+        Cart cart = cartService.findCart(cId);
         cart.update(itemId, newQuantity);
 
         LineItem item = cart.find(itemId);
         CartUpdateResponse cartUpdateResponse = new CartUpdateResponse();
-        cartUpdateResponse = productService.fillCartUpdateResponse(cartUpdateResponse, cart, item);
-        String jsonString = productService.makeJsonStringFromResponse(cartUpdateResponse);
+        cartUpdateResponse = cartService.fillCartUpdateResponse(cartUpdateResponse, cart, item);
+        String jsonString = cartService.makeJsonStringFromResponse(cartUpdateResponse);
         PrintWriter response = resp.getWriter();
         response.println(jsonString);
 
