@@ -5,6 +5,7 @@ import com.codecool.shop.model.Product;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public interface CartDao {
 
@@ -14,6 +15,6 @@ public interface CartDao {
     void remove(int cartId);
 
 
-    HashSet<Cart> getAll(int userId);
+    Set<Cart> getAll(int userId);
 
 }
