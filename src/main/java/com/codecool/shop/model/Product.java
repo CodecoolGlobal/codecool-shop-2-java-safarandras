@@ -84,16 +84,4 @@ public class Product extends BaseModel {
         return image;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Product product = (Product) o;
-        return defaultPrice.equals(product.defaultPrice) && defaultCurrency.equals(product.defaultCurrency) && productCategory.equals(product.productCategory) && supplier.equals(product.supplier) && image.equals(product.image);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(defaultPrice, defaultCurrency, productCategory, supplier, image);
-    }
 }
