@@ -2,6 +2,7 @@ package com.codecool.shop.model;
 
 import java.math.BigDecimal;
 import java.util.Currency;
+import java.util.Objects;
 
 public class Product extends BaseModel {
 
@@ -81,5 +82,18 @@ public class Product extends BaseModel {
 
     public String getImage() {
         return image;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return defaultPrice.equals(product.defaultPrice) && defaultCurrency.equals(product.defaultCurrency) && productCategory.equals(product.productCategory) && supplier.equals(product.supplier) && image.equals(product.image);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(defaultPrice, defaultCurrency, productCategory, supplier, image);
     }
 }
