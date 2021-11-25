@@ -9,10 +9,11 @@ import java.util.List;
 public interface CartDao {
 
     void add(Cart cart);
+    void update(Cart cart);
     Cart find(int cartId);
     void remove(int cartId);
 
 
-    HashSet<Cart> getAll();
+    HashSet<Cart> getAll(int userId);
 
 }
