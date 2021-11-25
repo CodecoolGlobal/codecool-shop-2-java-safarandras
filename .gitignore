@@ -1,6 +1,6 @@
 *.class
 
-#connection.properties
+connection.properties
 
 # OS-X
 **/.DS_Store
