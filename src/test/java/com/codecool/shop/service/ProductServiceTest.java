@@ -151,4 +151,33 @@ public class ProductServiceTest {
         when(productDaoMock.getBy(supplierT)).thenReturn(productsT);
         assertEquals(productsT, productService.getProductsForSupplier(supplierId));
     }
+
+    @Test
+    void getAllProducts_returnsAllProducts(){
+        Supplier bigFoot = new Supplier("Bigfoot", "Everything we have on Bigfoot");
+        ProductCategory mug = new ProductCategory("Mug", "Household items", "Mugs with funny labels");
+        List<Product> products = new ArrayList<>();
+        products.add(new Product("Bigfoot later haters mug", new BigDecimal("14.99"), "USD", "Bigfoot has had enough of y'all", mug, bigFoot, "bigfoot_later_haters.jpg"));
+        products.add(new Product("Bigfoot face mug", new BigDecimal("16.99"), "USD", "Idk it's kinda cursed ngl", mug, bigFoot, "bigfoot_face_mug.jpg"));
+        when(productDaoMock.getAll()).thenReturn(products);
+
+        productService = new ProductService(productDaoMock, productCategoryDaoMock, supplierDaoMock);
+        List<Product> result = productService.getAllProducts();
+
+        assertEquals(products, result);
+    }
+
+    @Test
+    void getProduct_returnsProduct(){
+        Supplier bigFoot = new Supplier("Bigfoot", "Everything we have on Bigfoot");
+        ProductCategory mug = new ProductCategory("Mug", "Household items", "Mugs with funny labels");
+        Product bigFootMug = new Product("Bigfoot later haters mug", new BigDecimal("14.99"), "USD", "Bigfoot has had enough of y'all", mug, bigFoot, "bigfoot_later_haters.jpg");
+        when(productDaoMock.find(bigFootMug.getId())).thenReturn(bigFootMug);
+
+        productService = new ProductService(productDaoMock, productCategoryDaoMock, supplierDaoMock);
+        Product result = productService.getProduct(bigFootMug.getId());
+
+        assertEquals(bigFootMug, result);
+
+    }
 }
