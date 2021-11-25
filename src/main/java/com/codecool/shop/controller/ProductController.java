@@ -11,6 +11,7 @@ import com.codecool.shop.dao.memory.SupplierDaoMem;
 import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.service.ProductService;
 import com.codecool.shop.config.TemplateEngineUtil;
+import com.codecool.shop.util.DaoSelector;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -28,7 +29,6 @@ import org.slf4j.LoggerFactory;
 @WebServlet(urlPatterns = {"/"}, initParams =
 @WebInitParam(name = "cartId", value = "0"))
     public class ProductController extends HttpServlet {
-    private ProductService productService;
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     @Override
@@ -39,27 +39,10 @@ import org.slf4j.LoggerFactory;
         if (cartId != null) {
             cId = Integer.parseInt(cartId);
         }
+        ProductService productService = DaoSelector.getService();
         CartDao cartDataStore = CartDaoMem.getInstance();
-
-        if(true){
-            try {
-                productService = new ProductService();
-            } catch (SQLException e) {
-                System.err.println("Database connection unavailable!");
-                logger.error("Database connection unavailable");
-                return;
-            }
-        }
-        else {
-            ProductDao productDataStore = ProductDaoMem.getInstance();
-            ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
-            SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
-            productService = new ProductService(productDataStore, productCategoryDataStore, supplierDataStore);
-        }
-
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
-
         context.setVariable("categories", productService.getAllProductCategories());
         context.setVariable("suppliers", productService.getAllSupplier());
         context.setVariable("showCart", true);

@@ -26,50 +26,14 @@ public class ProductService {
     private final ProductCategoryDao productCategoryDao;
     private final SupplierDao supplierDao;
 
-    public ProductService() throws SQLException, IOException {
-        DataSource dataSource = connect();
-        supplierDao = new SupplierJdbc(dataSource);
-        productCategoryDao = new ProductCategoryJdbc(dataSource);
-        productDao = new ProductJdbc(dataSource, productCategoryDao, supplierDao);
-    }
-
     public ProductService(ProductDao productDao, ProductCategoryDao productCategoryDao, SupplierDao supplierDao) {
         this.productDao = productDao;
         this.productCategoryDao = productCategoryDao;
         this.supplierDao = supplierDao;
     }
 
-    public ProductService(ProductCategoryDao productCategoryDao, SupplierDao supplierDao) {
-        this.productDao = null;
-        this.productCategoryDao = productCategoryDao;
-        this.supplierDao = supplierDao;
-    }
-
     public ProductCategory getProductCategory(int categoryId) {
         return productCategoryDao.find(categoryId);
-    }
-
-    private DataSource connect() throws SQLException, IOException {
-        try (InputStream input = new FileInputStream("src/main/resources/connection.properties")) {
-            Properties prop = new Properties();
-
-            prop.load(input);
-
-            PGSimpleDataSource dataSource = new PGSimpleDataSource();
-            dataSource.setDatabaseName(prop.getProperty("database"));
-            dataSource.setUser(prop.getProperty("db_user"));
-            dataSource.setPassword(prop.getProperty("db_password"));
-
-            System.out.println("Trying to connect...");
-            dataSource.getConnection().close();
-            System.out.println("Connection OK");
-
-            return dataSource;
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            throw new IOException();
-        }
     }
 
     public List<Product> getProductsForCategory(int categoryId) {
