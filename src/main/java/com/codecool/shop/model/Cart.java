@@ -10,7 +10,7 @@ public class Cart {
 
     private int cartId;
     private int userId;
-    private HashSet<LineItem> lineItems;
+    private Set<LineItem> lineItems;
     private static final Logger logger = LoggerFactory.getLogger(Cart.class);
 
     public Cart() {
@@ -56,7 +56,7 @@ public class Cart {
         logger.info("item removed from cart");
     }
 
-    public HashSet<LineItem> getAllLineItem() {
+    public Set<LineItem> getAllLineItem() {
         return lineItems;
     }
 

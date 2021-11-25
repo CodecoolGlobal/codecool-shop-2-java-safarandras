@@ -10,6 +10,7 @@ import javax.sql.DataSource;
 import java.lang.reflect.Type;
 import java.sql.*;
 import java.util.HashSet;
+import java.util.Set;
 
 public class CartDaoJdbc implements CartDao {
 
@@ -101,7 +102,7 @@ public class CartDaoJdbc implements CartDao {
     }
 
     @Override
-    public HashSet<Cart> getAll(int userId) {
+    public Set<Cart> getAll(int userId) {
         try(Connection connection = dataSource.getConnection()) {
             String sql = "SELECT * FROM productcategories";
             ResultSet resultSet = connection.createStatement().executeQuery(sql);
