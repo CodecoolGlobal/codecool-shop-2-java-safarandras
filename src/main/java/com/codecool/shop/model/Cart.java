@@ -115,4 +115,8 @@ public class Cart {
     public void setUserId(int userId) {
         this.userId = userId;
     }
+
+    public void setLineItems(HashSet<LineItem> lineItems) {
+        this.lineItems = lineItems;
+    }
 }
