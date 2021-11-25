@@ -1,6 +1,5 @@
 package com.codecool.shop.model;
 
-import com.codecool.shop.controller.CartServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

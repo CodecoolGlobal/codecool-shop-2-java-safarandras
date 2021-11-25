@@ -1,25 +1,11 @@
 package com.codecool.shop.service;
 
-import com.codecool.shop.dao.Jdbc.ProductCategoryJdbc;
-import com.codecool.shop.dao.Jdbc.ProductJdbc;
-import com.codecool.shop.dao.Jdbc.SupplierJdbc;
 import com.codecool.shop.dao.ProductCategoryDao;
 import com.codecool.shop.dao.ProductDao;
 import com.codecool.shop.dao.SupplierDao;
 import com.codecool.shop.model.*;
-import com.codecool.shop.model.response.CartUpdateResponse;
-import com.codecool.shop.model.response.DeleteItemResponse;
-import com.codecool.shop.model.response.Response;
-import com.google.gson.Gson;
-import org.postgresql.ds.PGSimpleDataSource;
 
-import javax.sql.DataSource;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.Properties;
 
 public class ProductService {
     private final ProductDao productDao;

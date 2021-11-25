@@ -4,7 +4,6 @@ import com.codecool.shop.dao.CartDao;
 import com.codecool.shop.model.Cart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.codecool.shop.model.Product;
 
 import java.util.HashSet;
 import java.util.Set;

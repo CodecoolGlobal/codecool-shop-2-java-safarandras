@@ -1,7 +1,6 @@
 package com.codecool.shop.model.response;
 
 import java.math.BigDecimal;
-import java.util.Currency;
 
 public class CartUpdateResponse extends Response {
 

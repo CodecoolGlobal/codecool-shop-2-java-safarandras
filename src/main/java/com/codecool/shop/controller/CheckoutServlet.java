@@ -1,12 +1,7 @@
 package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
-import com.codecool.shop.dao.CartDao;
-import com.codecool.shop.dao.ProductCategoryDao;
-import com.codecool.shop.dao.SupplierDao;
 import com.codecool.shop.dao.memory.CartDaoMem;
-import com.codecool.shop.dao.memory.ProductCategoryDaoMem;
-import com.codecool.shop.dao.memory.SupplierDaoMem;
 import com.codecool.shop.model.Cart;
 import com.codecool.shop.service.CartService;
 import com.codecool.shop.service.ProductService;
@@ -23,7 +18,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 
 @WebServlet(urlPatterns = {"/cart/checkout"}, initParams =
 @WebInitParam(name = "cartId", value = "0"))
@@ -44,7 +38,7 @@ public class CheckoutServlet extends HttpServlet {
         }
 
         //dynamic data for header menu
-        ProductService productService = DaoSelector.getService();
+        productService = DaoSelector.getService();
         Cart cart = cartService.findCart(cId);
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());

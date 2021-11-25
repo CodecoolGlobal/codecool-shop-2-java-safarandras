@@ -2,13 +2,7 @@ package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
 import com.codecool.shop.dao.CartDao;
-import com.codecool.shop.dao.ProductCategoryDao;
-import com.codecool.shop.dao.ProductDao;
-import com.codecool.shop.dao.SupplierDao;
 import com.codecool.shop.dao.memory.CartDaoMem;
-import com.codecool.shop.dao.memory.ProductCategoryDaoMem;
-import com.codecool.shop.dao.memory.ProductDaoMem;
-import com.codecool.shop.dao.memory.SupplierDaoMem;
 import com.codecool.shop.model.*;
 import com.codecool.shop.model.response.DeleteItemResponse;
 import com.codecool.shop.service.CartService;
@@ -31,7 +25,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.io.PrintWriter;
 
@@ -99,7 +92,6 @@ public class CartServlet extends HttpServlet {
         int itemId = Integer.parseInt(req.getParameter("itemId"));
         Cart cart = cartService.findCart(cId);
         cart.remove(itemId);
-        ProductService productService = DaoSelector.getService();
         DeleteItemResponse deleteItemResponse = new DeleteItemResponse();
         deleteItemResponse = cartService.fillDeleteItemResponse(deleteItemResponse, cart, itemId);
         String jsonString = cartService.makeJsonStringFromResponse(deleteItemResponse);
@@ -122,7 +114,6 @@ public class CartServlet extends HttpServlet {
         int newQuantity = updateCartItem.getQuantity();
         Cart cart = cartService.findCart(cId);
         cart.update(itemId, newQuantity);
-        ProductService productService = DaoSelector.getService();
         LineItem item = cart.find(itemId);
         CartUpdateResponse cartUpdateResponse = new CartUpdateResponse();
         cartUpdateResponse = cartService.fillCartUpdateResponse(cartUpdateResponse, cart, item);
