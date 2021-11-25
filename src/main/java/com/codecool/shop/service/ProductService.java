@@ -17,7 +17,7 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.List;
 
-public class ProductService{
+public class ProductService {
     private final ProductDao productDao;
     private final ProductCategoryDao productCategoryDao;
     private final SupplierDao supplierDao;
@@ -88,29 +88,6 @@ public class ProductService{
         return productDao.find(id);
     }
 
-    public int getNumberOfProductsInCart(Cart cart){
-        return cart.getNumberOfProductsInCart();
-    }
 
-    public DeleteItemResponse fillDeleteItemResponse(DeleteItemResponse deleteItemResponse, Cart cart, int itemId) {
-        deleteItemResponse.setProductId(itemId);
-        deleteItemResponse.setTotal(cart.calculateTotalPrice());
-        deleteItemResponse.setDefaultCurrency(cart.getDefaultCurrency());
-        return deleteItemResponse;
-    }
-
-    public String makeJsonStringFromResponse(Response response) {
-        Gson gson = new Gson();
-        return gson.toJson(response);
-    }
-
-    public CartUpdateResponse fillCartUpdateResponse(CartUpdateResponse cartUpdateResponse, Cart cart, LineItem item) {
-        cartUpdateResponse.setProductId(item.getProduct().getId());
-        cartUpdateResponse.setQuantity(item.getQuantity());
-        cartUpdateResponse.setSubtotal(item.getSubtotal());
-        cartUpdateResponse.setTotal(cart.calculateTotalPrice());
-        cartUpdateResponse.setDefaultCurrency(item.getDefaultCurrency());
-        return cartUpdateResponse;
-    }
 
 }
