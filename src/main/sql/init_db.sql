@@ -1,6 +1,8 @@
 DROP TABLE IF EXISTS Products CASCADE;
 DROP TABLE IF EXISTS ProductCategories CASCADE;
 DROP TABLE IF EXISTS Suppliers CASCADE;
+DROP TABLE IF EXISTS Users CASCADE;
+DROP TABLE IF EXISTS Carts CASCADE;
 
 
 CREATE TABLE Products(
@@ -25,6 +27,20 @@ CREATE TABLE Suppliers(
     id          SERIAL PRIMARY KEY  NOT NULL,
     name        VARCHAR(50)         NOT NULL,
     description VARCHAR(200)        NOT NULL
+);
+
+CREATE TABLE Users(
+    id          SERIAL PRIMARY KEY  NOT NULL,
+    name        VARCHAR(50)         NOT NULL,
+    email       VARCHAR(200)        NOT NULL,
+    password    VARCHAR(200)        NOT NULL
+);
+
+CREATE TABLE Carts(
+    id          SERIAL PRIMARY KEY  NOT NULL,
+    date        TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    userID      INTEGER             ,
+    items       TEXT        NOT NULL
 );
 
 INSERT INTO Suppliers(name, description) VALUES ('Bigfoot', 'Everything we have on Bigfoot');
@@ -83,3 +99,6 @@ ALTER TABLE ONLY Products
 
 ALTER TABLE ONLY Products
     ADD CONSTRAINT fkProductsSupplierID FOREIGN KEY (supplierID) REFERENCES Suppliers(id);
+
+ALTER TABLE ONLY carts
+    ADD CONSTRAINT fkCartsUserID FOREIGN KEY (userID) REFERENCES Users(id);
