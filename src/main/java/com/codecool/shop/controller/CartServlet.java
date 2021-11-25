@@ -13,6 +13,7 @@ import com.codecool.shop.model.*;
 import com.codecool.shop.model.response.DeleteItemResponse;
 import com.codecool.shop.service.CartService;
 import com.codecool.shop.service.ProductService;
+import com.codecool.shop.util.DaoSelector;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.codecool.shop.model.response.CartUpdateResponse;
@@ -37,7 +38,6 @@ import java.io.PrintWriter;
 @WebServlet(urlPatterns = {"/cart", "/api/cart"}, initParams =
 @WebInitParam(name = "cartId", value = "0"))
 public class CartServlet extends HttpServlet {
-    private ProductService productService;
     private static final Logger logger = LoggerFactory.getLogger(CartServlet.class);
     private CartDao cartDao = CartDaoMem.getInstance();
     private CartService cartService = new CartService(cartDao);
@@ -45,7 +45,7 @@ public class CartServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        logger.info("shopping cart call");
+        logger.info("shopping cart call by USER");
         String cartId = req.getParameter("cartId");
         int cId = 0;
         if (cartId != null) {
@@ -53,19 +53,7 @@ public class CartServlet extends HttpServlet {
         }
 
         //dynamic data for header menu
-        if(true){
-            try {
-                productService = new ProductService();
-            } catch (SQLException e) {
-                System.err.println("Database connection unavailable!");
-                return;
-            }
-        }
-        else{
-            ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
-            SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
-            productService = new ProductService(productCategoryDataStore, supplierDataStore);
-        }
+        ProductService productService = DaoSelector.getService();
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
         context.setVariable("categories", productService.getAllProductCategories());
@@ -81,7 +69,7 @@ public class CartServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.info("add element call");
+        logger.info("add element call by USER");
 
         String cartId = req.getParameter("cartId");
         int cId = 0;
@@ -89,11 +77,7 @@ public class CartServlet extends HttpServlet {
             cId = Integer.parseInt(cartId);
         }
 
-        ProductDao productDataStore = ProductDaoMem.getInstance();
-        ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
-        SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
-        ProductService productService = new ProductService(productDataStore, productCategoryDataStore, supplierDataStore);
-
+        ProductService productService = DaoSelector.getService();
         String body = req.getReader().readLine();
         Gson gson = new Gson();
         HashMap<String,Integer> productIdMap = gson.fromJson(body,new TypeToken<HashMap<String,Integer>>(){}.getType());
@@ -108,14 +92,14 @@ public class CartServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.info("element delete call");
+        logger.info("element delete call by USER");
 
         int cId = 0;    // put it into payload/session
 
         int itemId = Integer.parseInt(req.getParameter("itemId"));
         Cart cart = cartService.findCart(cId);
         cart.remove(itemId);
-
+        ProductService productService = DaoSelector.getService();
         DeleteItemResponse deleteItemResponse = new DeleteItemResponse();
         deleteItemResponse = cartService.fillDeleteItemResponse(deleteItemResponse, cart, itemId);
         String jsonString = cartService.makeJsonStringFromResponse(deleteItemResponse);
@@ -127,7 +111,7 @@ public class CartServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.info("element count modification call");
+        logger.info("element count modification call by USER");
 
         int cId = 0;    // put it into payload/session
 
@@ -138,7 +122,7 @@ public class CartServlet extends HttpServlet {
         int newQuantity = updateCartItem.getQuantity();
         Cart cart = cartService.findCart(cId);
         cart.update(itemId, newQuantity);
-
+        ProductService productService = DaoSelector.getService();
         LineItem item = cart.find(itemId);
         CartUpdateResponse cartUpdateResponse = new CartUpdateResponse();
         cartUpdateResponse = cartService.fillCartUpdateResponse(cartUpdateResponse, cart, item);

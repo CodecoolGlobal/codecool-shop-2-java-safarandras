@@ -12,6 +12,7 @@ import com.codecool.shop.model.ProductCategory;
 import com.codecool.shop.service.CartService;
 import com.codecool.shop.service.ProductService;
 import com.codecool.shop.config.TemplateEngineUtil;
+import com.codecool.shop.util.DaoSelector;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -41,26 +42,10 @@ import org.slf4j.LoggerFactory;
         if (cartId != null) {
             cId = Integer.parseInt(cartId);
         }
+        ProductService productService = DaoSelector.getService();
         CartDao cartDataStore = CartDaoMem.getInstance();
-
-        if(true){
-            try {
-                productService = new ProductService();
-            } catch (SQLException e) {
-                System.err.println("Database connection unavailable!");
-                return;
-            }
-        }
-        else {
-            ProductDao productDataStore = ProductDaoMem.getInstance();
-            ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
-            SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
-            productService = new ProductService(productDataStore, productCategoryDataStore, supplierDataStore);
-        }
-
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
-
         context.setVariable("categories", productService.getAllProductCategories());
         context.setVariable("suppliers", productService.getAllSupplier());
         context.setVariable("showCart", true);
@@ -79,7 +64,7 @@ import org.slf4j.LoggerFactory;
         }else{
             context.setVariable("category", new ProductCategory("All Products", "", ""));
             context.setVariable("products", productService.getAllProducts());
-            logger.info("not parameterized main page call");
+            logger.info("not parameterized main page call by USER");
         }
 
         engine.process("product/index.html", context, resp.getWriter());

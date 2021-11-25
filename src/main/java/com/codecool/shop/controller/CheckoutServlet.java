@@ -10,6 +10,7 @@ import com.codecool.shop.dao.memory.SupplierDaoMem;
 import com.codecool.shop.model.Cart;
 import com.codecool.shop.service.CartService;
 import com.codecool.shop.service.ProductService;
+import com.codecool.shop.util.DaoSelector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.thymeleaf.TemplateEngine;
@@ -34,7 +35,7 @@ public class CheckoutServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.info("checkout page call");
+        logger.info("checkout page call by USER");
 
         String cartId = req.getParameter("cartId");
         int cId = 0;
@@ -43,23 +44,8 @@ public class CheckoutServlet extends HttpServlet {
         }
 
         //dynamic data for header menu
-        if(true){
-            try {
-                productService = new ProductService();
-            } catch (SQLException e) {
-                System.err.println("Database connection unavailable!");
-                return;
-            }
-        }
-        else{
-            ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
-            SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
-            productService = new ProductService(productCategoryDataStore, supplierDataStore);
-        }
+        ProductService productService = DaoSelector.getService();
         Cart cart = cartService.findCart(cId);
-        ProductCategoryDao productCategoryDataStore = ProductCategoryDaoMem.getInstance();
-        SupplierDao supplierDataStore = SupplierDaoMem.getInstance();
-        ProductService productService = new ProductService(productCategoryDataStore, supplierDataStore);
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
         context.setVariable("categories", productService.getAllProductCategories());
