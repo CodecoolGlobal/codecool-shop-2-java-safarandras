@@ -23,7 +23,7 @@ import java.io.IOException;
 @WebInitParam(name = "cartId", value = "0"))
 public class CheckoutServlet extends HttpServlet {
     private ProductService productService;
-    private CartService cartService = new CartService(CartDaoMem.getInstance());
+    private CartService cartService;
 
     private static final Logger logger = LoggerFactory.getLogger(CheckoutServlet.class);
 
@@ -39,6 +39,7 @@ public class CheckoutServlet extends HttpServlet {
 
         //dynamic data for header menu
         productService = DaoSelector.getService();
+        cartService = DaoSelector.getCartService();
         Cart cart = cartService.findCart(cId);
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());

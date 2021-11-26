@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 @WebInitParam(name = "cartId", value = "0"))
     public class ProductController extends HttpServlet {
     private ProductService productService;
-    private CartService cartService = new CartService(CartDaoMem.getInstance());
+    private CartService cartService;
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     @Override
@@ -36,13 +36,13 @@ import org.slf4j.LoggerFactory;
             cId = Integer.parseInt(cartId);
         }
         productService = DaoSelector.getService();
-        CartDao cartDataStore = CartDaoMem.getInstance();
+        cartService = DaoSelector.getCartService();
         TemplateEngine engine = TemplateEngineUtil.getTemplateEngine(req.getServletContext());
         WebContext context = new WebContext(req, resp, req.getServletContext());
         context.setVariable("categories", productService.getAllProductCategories());
         context.setVariable("suppliers", productService.getAllSupplier());
         context.setVariable("showCart", true);
-        context.setVariable("numberOfProductsInCart", cartService.getNumberOfProductsInCart(cartDataStore.find(cId)));
+        context.setVariable("numberOfProductsInCart", cartService.getNumberOfProductsInCart(cartService.findCart(cId)));
 
         if (req.getParameter("categoryId") != null && Integer.parseInt(req.getParameter("categoryId")) > 0
                 && Integer.parseInt(req.getParameter("categoryId")) <= productService.getAllProductCategories().size()) {

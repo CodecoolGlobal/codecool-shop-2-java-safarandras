@@ -32,8 +32,7 @@ import java.io.PrintWriter;
 @WebInitParam(name = "cartId", value = "0"))
 public class CartServlet extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(CartServlet.class);
-    private CartDao cartDao = CartDaoMem.getInstance();
-    private CartService cartService = new CartService(cartDao);
+    private CartService cartService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -53,6 +52,7 @@ public class CartServlet extends HttpServlet {
         context.setVariable("suppliers", productService.getAllSupplier());
         context.setVariable("showCart", false);
 
+        cartService = DaoSelector.getCartService();
         Cart cart = cartService.findCart(cId);
         context.setVariable("products", cart.getAllLineItem());
         context.setVariable("total", cart.calculateTotalPrice());
@@ -76,8 +76,9 @@ public class CartServlet extends HttpServlet {
         HashMap<String,Integer> productIdMap = gson.fromJson(body,new TypeToken<HashMap<String,Integer>>(){}.getType());
         int productId = productIdMap.get("productId");
         Product product = productService.getProduct(productId);
+        cartService = DaoSelector.getCartService();
         Cart cart = cartService.findCart(cId);
-        cart.add(product);
+        cartService.addProductToCart(cId, product);
 
         logger.info("Shopping cart current state: {}", cart.toString());
 
@@ -90,8 +91,9 @@ public class CartServlet extends HttpServlet {
         int cId = 0;    // put it into payload/session
 
         int itemId = Integer.parseInt(req.getParameter("itemId"));
+        cartService = DaoSelector.getCartService();
         Cart cart = cartService.findCart(cId);
-        cart.remove(itemId);
+        cartService.deleteItemFromCart(cart, itemId);
         DeleteItemResponse deleteItemResponse = new DeleteItemResponse();
         deleteItemResponse = cartService.fillDeleteItemResponse(deleteItemResponse, cart, itemId);
         String jsonString = cartService.makeJsonStringFromResponse(deleteItemResponse);
@@ -112,8 +114,9 @@ public class CartServlet extends HttpServlet {
 
         int itemId = updateCartItem.getItemId();
         int newQuantity = updateCartItem.getQuantity();
+        cartService = DaoSelector.getCartService();
         Cart cart = cartService.findCart(cId);
-        cart.update(itemId, newQuantity);
+        cartService.updateCart(cart, itemId, newQuantity);
         LineItem item = cart.find(itemId);
         CartUpdateResponse cartUpdateResponse = new CartUpdateResponse();
         cartUpdateResponse = cartService.fillCartUpdateResponse(cartUpdateResponse, cart, item);
