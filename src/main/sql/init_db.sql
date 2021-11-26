@@ -37,10 +37,10 @@ CREATE TABLE Users(
 );
 
 CREATE TABLE Carts(
-    id          SERIAL PRIMARY KEY  NOT NULL,
-    date        TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    id          INTEGER  NOT NULL,
+    date        TIMESTAMP WITHOUT TIME ZONE,
     userID      INTEGER             ,
-    items       TEXT        NOT NULL
+    items       TEXT
 );
 
 INSERT INTO Suppliers(name, description) VALUES ('Bigfoot', 'Everything we have on Bigfoot');
@@ -52,6 +52,8 @@ INSERT INTO Suppliers(name, description) VALUES ('Alien', 'Everything we have on
 INSERT INTO ProductCategories(name, department, description) VALUES ('Miscellaneous', 'Household items', 'Any product that wouldnt fit other categories');
 INSERT INTO ProductCategories(name, department, description) VALUES ('T-shirt', 'Clothing', 'Funny T-shirts with our favourite real-life monsters on them');
 INSERT INTO ProductCategories(name, department, description) VALUES ('Mug', 'Household items', 'Mugs with funny labels');
+
+INSERT INTO Carts(id, date, userid, items) VALUES (0, NULL, NULL, NULL);
 
 
 INSERT INTO Products(name, price, currency, description, categoryID, supplierID, imageRoute)  VALUES
