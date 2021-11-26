@@ -11,7 +11,6 @@ public interface CartDao {
     Cart find(int cartId);
     void remove(int cartId);
 
-
     Set<Cart> getAll(int userId);
 
 }
