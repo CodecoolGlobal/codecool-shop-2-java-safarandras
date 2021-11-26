@@ -1,7 +1,6 @@
 package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
-import com.codecool.shop.dao.memory.CartDaoMem;
 import com.codecool.shop.model.Cart;
 import com.codecool.shop.service.CartService;
 import com.codecool.shop.service.ProductService;

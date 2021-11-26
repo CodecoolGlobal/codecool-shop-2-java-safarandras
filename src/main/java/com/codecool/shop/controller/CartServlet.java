@@ -1,8 +1,6 @@
 package com.codecool.shop.controller;
 
 import com.codecool.shop.config.TemplateEngineUtil;
-import com.codecool.shop.dao.CartDao;
-import com.codecool.shop.dao.memory.CartDaoMem;
 import com.codecool.shop.model.*;
 import com.codecool.shop.model.response.DeleteItemResponse;
 import com.codecool.shop.service.CartService;

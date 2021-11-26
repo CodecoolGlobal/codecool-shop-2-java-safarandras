@@ -2,7 +2,6 @@ package com.codecool.shop.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class Supplier extends BaseModel {
     private transient List<Product> products;
