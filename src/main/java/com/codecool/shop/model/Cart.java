@@ -23,6 +23,7 @@ public class Cart {
             for (LineItem lineItem: lineItems) {
                 if (product.getId() == lineItem.getProduct().getId()) {
                     lineItem.increaseQuantityAndSubtotal();
+                    logger.info("item count increased in cart");
                     return;
                 }
             }
