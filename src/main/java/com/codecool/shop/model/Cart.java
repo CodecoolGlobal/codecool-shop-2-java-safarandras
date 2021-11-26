@@ -121,7 +121,7 @@ public class Cart {
         this.userId = userId;
     }
 
-    public void setLineItems(HashSet<LineItem> lineItems) {
+    public void setLineItems(Set<LineItem> lineItems) {
         this.lineItems = lineItems;
     }
 }
